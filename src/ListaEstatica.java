@@ -4,12 +4,20 @@ public class ListaEstatica {
         int i;
         int ultimo;
 
-    // adicionar algoritmo de busca nessa e na outra
-
         public ListaEstatica(int n){
             this.tamanho = n;
             this.valor = new int[tamanho];
             this.ultimo = -1;
+        }
+
+        public int getTamanho(){
+            return this.tamanho;
+        }
+
+        public void printarLista(){
+            for(i = 0;i <= ultimo;i++){
+                System.out.println(i + ". " + valor[i]);
+            }
         }
 
         public boolean add(int elemento, int posicao){
@@ -36,12 +44,6 @@ public class ListaEstatica {
             valor[ultimo] = 0;
             ultimo--;
             return true;
-        }
-
-        public void printarLista(){
-            for(i = 0;i <= ultimo;i++){
-                System.out.println(i + ". " + valor[i]);
-            }
         }
 
         public boolean buscarElemento(int elemento){
