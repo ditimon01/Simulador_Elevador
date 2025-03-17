@@ -1,17 +1,20 @@
-public class ListaDinamica {
-    private Node head;
+public class ListaDinamica<T> {
+    private Node<T> head;
 
     public ListaDinamica(){
         this.head = null;
     }
 
-    public boolean add(int elemento, int posicao){
+    public boolean add(T elemento, int posicao){
 
         if(posicao < 0){
             return false;
         }
 
-        Node newNode = new Node(elemento);
+        if(head != null && elemento.getClass() != this.head.elemento.getClass()) return false;
+        Node<T> newNode = new Node<>(elemento);
+
+
 
         if(posicao == 0){
             newNode.next = head;
@@ -19,7 +22,7 @@ public class ListaDinamica {
             return true;
         }
 
-        Node atual = head;
+        Node<T> atual = head;
         int i = 0;
 
         while(atual !=null && i < posicao-1){
@@ -43,7 +46,7 @@ public class ListaDinamica {
             return false;
         }
 
-        Node atual = head;
+        Node<T> atual = head;
 
         int i = 0;
         while(atual != null && i < posicao-1){
@@ -61,9 +64,10 @@ public class ListaDinamica {
 
 
     public void printarLista(){
-        Node atual = head;
+        Node<T> atual = head;
         int i = 0;
 
+        System.out.println();
         while(atual != null){
             System.out.println("\t" + i + ". " + atual.elemento);
             atual = atual.next;
@@ -71,12 +75,14 @@ public class ListaDinamica {
         }
     }
 
-    public boolean buscarElemento(int elemento){
+    public boolean buscarElemento(T elemento){
+
         boolean retorno = false;
-        Node atual = head;
+
+        Node<T> atual = head;
         int i = 0;
 
-        System.out.println("\nBuscando elemento "+elemento);
+        System.out.println("\nBuscando elemento: "+elemento);
 
         while(atual !=null){
             if(atual.elemento == elemento){

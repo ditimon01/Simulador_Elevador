@@ -1,8 +1,8 @@
-public class Node {
-    int elemento;
-    Node next;
+public class Node<T> {
+    T elemento;
+    Node<T> next;
 
-    public Node(int elemento) {
+    public Node(T elemento) {
         this.elemento = elemento;
         this.next = null;
     }

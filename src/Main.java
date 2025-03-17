@@ -3,6 +3,7 @@
 public class Main {
     public static void main(String[] args) {
 
+
 //    ListaEstatica lista = new ListaEstatica(10);
 //
 //    lista.add(5,0);
@@ -15,16 +16,16 @@ public class Main {
 //    lista.buscarElemento(15);
 
 
-//        ListaDinamica lista2 = new ListaDinamica();
-//
-//        lista2.add(5,0);
-//        lista2.add(10,1);
-//        lista2.add(15,2);
-//        lista2.add(15,3);
-//
-//        lista2.printarLista();
-//
-//        lista2.buscarElemento(15);
+        ListaDinamica lista2 = new ListaDinamica();
+
+        System.out.println(lista2.add("bingolo",0));
+        System.out.println(lista2.add(10,1));
+        lista2.add(15,2);
+        lista2.add(15,3);
+
+        lista2.printarLista();
+
+        lista2.buscarElemento("bingolo");
 
     }
 }

@@ -9,7 +9,7 @@ public class FilaComum {
         this.empty = true;
     }
 
-    public void enqueue(int elemento){
+    public void enqueue(Class<?> elemento){
 
         Node e = new Node(elemento);
 
@@ -32,7 +32,7 @@ public class FilaComum {
             return null;
         }
 
-        Node e = new Node(0);
+        Node e = new Node(null);
         e = tail;
 
         if(head == tail){
