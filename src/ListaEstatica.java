@@ -10,10 +10,6 @@ public class ListaEstatica {
             this.ultimo = -1;
         }
 
-        public int getTamanho(){
-            return this.tamanho;
-        }
-
         public void printarLista(){
             for(i = 0;i <= ultimo;i++){
                 System.out.println(i + ". " + valor[i]);
