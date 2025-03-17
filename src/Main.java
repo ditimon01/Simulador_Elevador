@@ -3,5 +3,7 @@ public class Main {
         System.out.println("Hello, World!");
 
          ListaDinamica lista = new ListaDinamica();
+
+         lista.add(5, 0);
     }
 }
