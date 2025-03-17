@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="sekeffListas:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/sekeffListas_jar</output-path>
+    <root id="archive" name="sekeffListas.jar">
+      <element id="module-output" name="sekeffListas" />
+    </root>
+  </artifact>
+</component>
