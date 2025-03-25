@@ -10,11 +10,8 @@ public class Main {
 
         lista.printarDeque();
 
-        System.out.println(lista.popRight());
-
-        lista.printarDeque();
-
-        System.out.println(lista.popLeft());
+        lista.RotationRightToLeft(3);
+        lista.RotationLeftToRight(3);
 
         lista.printarDeque();
 

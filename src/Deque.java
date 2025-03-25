@@ -23,7 +23,7 @@ public class Deque<T> {
         }
     }
 
-    public boolean pushRight(T elemento){
+    public boolean pushLeft(T elemento){
 
         if(elemento == null) return false;
 
@@ -40,7 +40,7 @@ public class Deque<T> {
         return true;
     }
 
-    public boolean pushLeft(T elemento){
+    public boolean pushRight(T elemento){
 
         if(elemento == null) return false;
 
@@ -55,7 +55,7 @@ public class Deque<T> {
         return true;
     }
 
-    public T popRight(){
+    public T popLeft(){
         if(isEmpty()) return null;
 
         T elemento = left.elemento;
@@ -70,7 +70,7 @@ public class Deque<T> {
         return elemento;
     }
 
-    public T popLeft(){
+    public T popRight(){
         if(isEmpty()) return null;
 
         T elemento = right.elemento;
@@ -85,12 +85,42 @@ public class Deque<T> {
         return elemento;
     }
 
-    public T firstRight(){
+    public T firstLeft(){
         return isEmpty() ? null : left.elemento;
     }
 
-    public T firstLeft(){
+    public T firstRight(){
         return isEmpty() ? null : right.elemento;
+    }
+
+    public void LeftToRight(){
+        left.ant = right;
+        right.next = left;
+        left = left.next;
+        left.ant = null;
+        right = right.next;
+        right.next = null;
+    }
+
+    public void RightToLeft(){
+        left.ant = right;
+        right.next = left;
+        right = right.ant;
+        right.next = null;
+        left = left.ant;
+        left.ant = null;
+    }
+
+    public void RotationRightToLeft(int quantidade){
+        for(int i = 0; i < quantidade; i++){
+            RightToLeft();
+        }
+    }
+
+    public void RotationLeftToRight(int quantidade){
+        for(int i = 0; i < quantidade; i++){
+            LeftToRight();
+        }
     }
 
 }
