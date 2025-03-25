@@ -1,19 +1,17 @@
 public class Main {
     public static void main(String[] args) {
 
-        Deque lista = new Deque<>();
+        Deque<String> deque = new Deque<>();
 
-        lista.pushRight(1);
-        lista.pushRight(2);
-        lista.pushLeft(3);
-        lista.pushLeft(4);
+        deque.pushLeft("A");
+        deque.pushRight("B");
+        deque.pushLeft("C");
 
-        lista.printarDeque();
+        deque.printDeque(); // [C, A, B]
 
-        lista.RotationRightToLeft(3);
-        lista.RotationLeftToRight(3);
+        deque.rotationRightToLeft(2);
 
-        lista.printarDeque();
+        deque.printDeque(); // [A, B, C]
 
 
     }

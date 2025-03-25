@@ -1,17 +1,19 @@
 public class Deque<T> {
     private NodeDuplo<T> left;
     private NodeDuplo<T> right;
+    private int size;
 
     public Deque(){
         this.left = null;
         this.right = null;
+        this.size = 0;
     }
 
     public boolean isEmpty(){
-        return left == null;
+        return size == 0;
     }
 
-    public void printarDeque(){
+    public void printDeque(){
         NodeDuplo<T> atual = left;
         int cont = 0;
 
@@ -23,9 +25,7 @@ public class Deque<T> {
         }
     }
 
-    public boolean pushLeft(T elemento){
-
-        if(elemento == null) return false;
+    public void pushLeft(T elemento){
 
         NodeDuplo<T> newNode = new NodeDuplo<>(elemento);
 
@@ -34,15 +34,11 @@ public class Deque<T> {
             left.ant = newNode;
             newNode.next = left;
         }
-
-
+        size++;
         left = newNode;
-        return true;
     }
 
-    public boolean pushRight(T elemento){
-
-        if(elemento == null) return false;
+    public void pushRight(T elemento){
 
         NodeDuplo<T> newNode = new NodeDuplo<>(elemento);
 
@@ -51,8 +47,8 @@ public class Deque<T> {
             right.next = newNode;
             newNode.ant = right;
         }
+        size++;
         this.right = newNode;
-        return true;
     }
 
     public T popLeft(){
@@ -67,6 +63,7 @@ public class Deque<T> {
         }
         left = left.next;
         left.ant = null;
+        size--;
         return elemento;
     }
 
@@ -82,6 +79,7 @@ public class Deque<T> {
             right = right.ant;
             right.next = null;
         }
+        size--;
         return elemento;
     }
 
@@ -93,7 +91,9 @@ public class Deque<T> {
         return isEmpty() ? null : right.elemento;
     }
 
-    public void LeftToRight(){
+    public void leftToRight(){
+        if(isEmpty()) return;
+        if(left == right) return;
         left.ant = right;
         right.next = left;
         left = left.next;
@@ -102,7 +102,9 @@ public class Deque<T> {
         right.next = null;
     }
 
-    public void RightToLeft(){
+    public void rightToLeft(){
+        if(isEmpty()) return;
+        if(left == right) return;
         left.ant = right;
         right.next = left;
         right = right.ant;
@@ -111,15 +113,17 @@ public class Deque<T> {
         left.ant = null;
     }
 
-    public void RotationRightToLeft(int quantidade){
-        for(int i = 0; i < quantidade; i++){
-            RightToLeft();
+    public void rotationRightToLeft(int quantidade){
+        if(isEmpty() || quantidade <= 0) return;
+        for(int i = 0; i < quantidade%size; i++){
+            rightToLeft();
         }
     }
 
-    public void RotationLeftToRight(int quantidade){
-        for(int i = 0; i < quantidade; i++){
-            LeftToRight();
+    public void rotationLeftToRight(int quantidade){
+        if(isEmpty() || quantidade <= 0) return;
+        for(int i = 0; i < quantidade%size; i++){
+            leftToRight();
         }
     }
 
