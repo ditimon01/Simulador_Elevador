@@ -1,17 +1,22 @@
 public class Main {
     public static void main(String[] args) {
 
-        ListaDupla<Integer> lista = new ListaDupla<>();
+        Deque lista = new Deque<>();
 
-        lista.add(4,0);
-        lista.add(5,1);
-        lista.add(6,2);
-        lista.add(7,2);
-        lista.add(8,2);
-        lista.add(9,5);
-        lista.add(10,6);
+        lista.pushRight(1);
+        lista.pushRight(2);
+        lista.pushLeft(3);
+        lista.pushLeft(4);
 
-        lista.printarLista();
+        lista.printarDeque();
+
+        System.out.println(lista.popRight());
+
+        lista.printarDeque();
+
+        System.out.println(lista.popLeft());
+
+        lista.printarDeque();
 
 
     }

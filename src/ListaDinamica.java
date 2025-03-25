@@ -70,7 +70,7 @@ public class ListaDinamica<T> {
 
         System.out.println();
         while(atual != null){
-            System.out.println("\t" + i + ". " + atual.elemento);
+            System.out.println("\r\t" + i + ". " + atual.elemento);
             atual = atual.next;
             i++;
         }
