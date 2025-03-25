@@ -23,7 +23,7 @@ public class Deque<T> {
         }
     }
 
-    public boolean pushRight(T elemento){
+    public boolean pushLeft(T elemento){
 
         if(elemento == null) return false;
 
@@ -40,7 +40,7 @@ public class Deque<T> {
         return true;
     }
 
-    public boolean pushLeft(T elemento){
+    public boolean pushRight(T elemento){
 
         if(elemento == null) return false;
 
@@ -55,7 +55,7 @@ public class Deque<T> {
         return true;
     }
 
-    public T popRight(){
+    public T popLeft(){
         if(isEmpty()) return null;
 
         T elemento = left.elemento;
@@ -70,7 +70,7 @@ public class Deque<T> {
         return elemento;
     }
 
-    public T popLeft(){
+    public T popRight(){
         if(isEmpty()) return null;
 
         T elemento = right.elemento;
@@ -85,11 +85,11 @@ public class Deque<T> {
         return elemento;
     }
 
-    public T firstRight(){
+    public T firstLeft(){
         return isEmpty() ? null : left.elemento;
     }
 
-    public T firstLeft(){
+    public T firstRight(){
         return isEmpty() ? null : right.elemento;
     }
 
