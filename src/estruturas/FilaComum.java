@@ -1,3 +1,5 @@
+package estruturas;
+
 public class FilaComum<T> {
     private Node<T> head;
     private Node<T> tail;

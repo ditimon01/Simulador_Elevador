@@ -1,3 +1,5 @@
+package estruturas;
+
 public class Deque<T> {
     private NodeDuplo<T> left;
     private NodeDuplo<T> right;
@@ -91,6 +93,23 @@ public class Deque<T> {
         return isEmpty() ? null : right.elemento;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void leftToRight(){
         if(isEmpty()) return;
         if(left == right) return;
@@ -101,6 +120,8 @@ public class Deque<T> {
         right = right.next;
         right.next = null;
     }
+
+
 
     public void rightToLeft(){
         if(isEmpty()) return;

@@ -1,3 +1,5 @@
+package estruturas;
+
 public class NodeDuplo<T> {
 
     NodeDuplo<T> ant;

@@ -1,17 +1,14 @@
+import estruturas.ListaDinamica;
+
 public class Main {
     public static void main(String[] args) {
 
-        Deque<String> deque = new Deque<>();
+        ListaDinamica<Integer> lista = new ListaDinamica<>();
 
-        deque.pushLeft("A");
-        deque.pushRight("B");
-        deque.pushLeft("C");
+        System.out.println(lista.add(1,0));
+        System.out.println(lista.add(1,2));
 
-        deque.printDeque(); // [C, A, B]
 
-        deque.rotationRightToLeft(2);
-
-        deque.printDeque(); // [A, B, C]
 
 
     }

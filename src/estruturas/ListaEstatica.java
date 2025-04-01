@@ -1,3 +1,5 @@
+package estruturas;
+
 public class ListaEstatica {
 
         int tamanho;

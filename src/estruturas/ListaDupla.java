@@ -1,3 +1,5 @@
+package estruturas;
+
 public class ListaDupla<T> {
     private NodeDuplo<T> head;
     private NodeDuplo<T> tail;
@@ -24,7 +26,6 @@ public class ListaDupla<T> {
             newNode.next = head;
             this.head.ant = newNode;
             this.head = newNode;
-            newNode.ant = null;
             return true;
         }
 
@@ -52,7 +53,7 @@ public class ListaDupla<T> {
 
     }
 
-    public void printarLista(){
+    public void printLista(){
         NodeDuplo<T> atual = head;
         int i = 0;
 

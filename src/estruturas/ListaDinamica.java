@@ -1,3 +1,5 @@
+package estruturas;
+
 public class ListaDinamica<T> {
 
     private Node<T> head;
@@ -47,6 +49,13 @@ public class ListaDinamica<T> {
             return false;
         }
 
+        if(pos == 0){
+            Node<T> e = head;
+            head = head.next;
+            e.next = null;
+            return true;
+        }
+
         Node<T> atual = head;
 
         int i = 0;
@@ -59,12 +68,14 @@ public class ListaDinamica<T> {
             return false;
         }
 
-        atual.next = atual.next.next;
+        Node<T> e = atual.next;
+        atual.next = e.next;
+        e.next = null;
         return true;
     }
 
 
-    public void printarLista(){
+    public void printLista(){
         Node<T> atual = head;
         int i = 0;
 

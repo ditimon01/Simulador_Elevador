@@ -1,3 +1,5 @@
+package estruturas;
+
 public class HeapBinario {
     private int[] prioridade;
     private int ultimo;
