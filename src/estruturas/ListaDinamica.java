@@ -5,7 +5,6 @@ public class ListaDinamica<T> {
     private Node<T> head;
 
     public ListaDinamica(){
-
         this.head = null;
     }
 

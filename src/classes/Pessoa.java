@@ -2,13 +2,18 @@ package classes;
 
 public class Pessoa {
 
-    private boolean prioridade;
+    private int prioridade;
 
-    public Pessoa(boolean prioridade) {
+    public Pessoa(int prioridade) {
         this.prioridade = prioridade;
     }
 
-    public boolean temPrioridade() {
+    public int getPrioridade() {
         return prioridade;
     }
+
+    public void setPrioridade(int prioridade) {
+        this.prioridade = prioridade;
+    }
+
 }

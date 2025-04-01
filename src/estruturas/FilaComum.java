@@ -11,7 +11,7 @@ public class FilaComum<T> {
         this.empty = true;
     }
 
-    public void enqueue(T elemento){
+    public void enqueue(int elemento){
 
         Node<T> e = new Node<>(elemento);
 
