@@ -1,16 +1,16 @@
 package estruturas;
 
-public class ListaEstatica {
+public class ListaEstatica<T> {
 
-        int tamanho;
-        int[] vetor;
-        int ultimo;
+        private int tamanho;
+        private T[] vetor;
+        private int ultimo;
 
         int i;
 
         public ListaEstatica(int n){
             this.tamanho = n;
-            this.vetor = new int[tamanho];
+            this.vetor = (T[]) new Object[tamanho];
             this.ultimo = -1;
         }
 
@@ -20,7 +20,7 @@ public class ListaEstatica {
             }
         }
 
-        public boolean add(int elemento, int pos){
+        public boolean add(T elemento, int pos){
             i = tamanho;
 
             if (pos > ultimo + 1 || pos < 0 || ultimo + 1 >= tamanho){
@@ -46,12 +46,12 @@ public class ListaEstatica {
                 vetor[i] = vetor[i+1];
             }
 
-            vetor[ultimo] = 0;
+            vetor[ultimo] = null;
             ultimo--;
             return true;
         }
 
-        public boolean buscarElemento(int elemento){
+        public boolean buscarElemento(T elemento){
             boolean retorno = false;
 
             System.out.println("Buscando o elemento " + elemento);

@@ -11,7 +11,7 @@ public class FilaComum<T> {
         this.empty = true;
     }
 
-    public void enqueue(int elemento){
+    public void enqueue(T elemento){
 
         Node<T> e = new Node<>(elemento);
 
@@ -20,7 +20,7 @@ public class FilaComum<T> {
             tail = e;
         }
         else{
-            e.next = head;
+            e.setNext(head);
             head = e;
         }
         empty = false;
@@ -45,12 +45,12 @@ public class FilaComum<T> {
 
         Node<T> atual = head;
 
-        while(atual.next != e){
-            atual = atual.next;
+        while(atual.getNext() != e){
+            atual = atual.getNext();
         }
 
         tail = atual;
-        atual.next = null;
+        atual.setNext(null);
         return e;
 
     }

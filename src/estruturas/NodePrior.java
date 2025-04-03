@@ -6,7 +6,7 @@ public class NodePrior {
 
     private NodePrior next;
     private int prioridade;
-    private FilaComum<Pessoa> fila;
+    private FilaComum fila;
 
     public NodePrior(int prioridade){
         this.prioridade = prioridade;
@@ -30,11 +30,11 @@ public class NodePrior {
         this.prioridade = prioridade;
     }
 
-    public FilaComum<Pessoa> getFila() {
+    public FilaComum getFila() {
         return fila;
     }
 
-    public void setFila(FilaComum<Pessoa> fila) {
+    public void setFila(FilaComum fila) {
         this.fila = fila;
     }
 

@@ -14,12 +14,12 @@ public class ListaDinamica<T> {
             return false;
         }
 
-        if(head != null && elemento.getClass() != this.head.elemento.getClass()) return false;
+        if(head != null && elemento.getClass() != this.head.getElemento().getClass()) return false;
         Node<T> newNode = new Node<>(elemento);
 
 
         if(pos == 0){
-            newNode.next = head;
+            newNode.setNext(head);
             head = newNode;
             return true;
         }
@@ -28,7 +28,7 @@ public class ListaDinamica<T> {
         int i = 0;
 
         while(atual !=null && i < pos-1){
-            atual = atual.next;
+            atual = atual.getNext();
             i++;
         }
 
@@ -36,8 +36,8 @@ public class ListaDinamica<T> {
             return false;
         }
 
-        newNode.next = atual.next;
-        atual.next = newNode;
+        newNode.setNext(atual.getNext());
+        atual.setNext(newNode);
 
         return true;
     }
@@ -50,8 +50,8 @@ public class ListaDinamica<T> {
 
         if(pos == 0){
             Node<T> e = head;
-            head = head.next;
-            e.next = null;
+            head = head.getNext();
+            e.setNext(null);
             return true;
         }
 
@@ -59,7 +59,7 @@ public class ListaDinamica<T> {
 
         int i = 0;
         while(atual != null && i < pos-1){
-            atual = atual.next;
+            atual = atual.getNext();
             i++;
         }
 
@@ -67,9 +67,9 @@ public class ListaDinamica<T> {
             return false;
         }
 
-        Node<T> e = atual.next;
-        atual.next = e.next;
-        e.next = null;
+        Node<T> e = atual.getNext();
+        atual.setNext(e.getNext());
+        e.setNext(null);
         return true;
     }
 
@@ -80,8 +80,8 @@ public class ListaDinamica<T> {
 
         System.out.println();
         while(atual != null){
-            System.out.println("\r\t" + i + ". " + atual.elemento);
-            atual = atual.next;
+            System.out.println("\r\t" + i + ". " + atual.getElemento());
+            atual = atual.getNext();
             i++;
         }
     }
@@ -93,14 +93,14 @@ public class ListaDinamica<T> {
         Node<T> atual = head;
         int i = 0;
 
-        System.out.println("\nBuscando elemento: "+elemento);
+        System.out.println("\nBuscando elemento: " + elemento);
 
         while(atual !=null){
-            if(atual.elemento == elemento){
+            if(atual.getElemento() == elemento){
                 System.out.println("Elemento encontrado na posição " + i);
                 retorno = true;
             }
-            atual = atual.next;
+            atual = atual.getNext();
             i++;
         }
 
@@ -112,51 +112,8 @@ public class ListaDinamica<T> {
     }
 
 
-    //Ordena inteiros, de forma que os pares fiquem no final da lista, mantendo a ordem relativa dos ímpares e dos pares
-    public boolean OrdenarPares(){
-
-        if(head == null || head.elemento.getClass() != Integer.class || head.next == null) return false;
-
-        Node ParHead = null, ParTail = null;
-        Node ImparHead = null, ImparTail = null;
-
-        Node atual = head;
-
-        while(atual != null){
-            if((Integer) atual.elemento % 2 == 0){
-                if(ParHead == null){
-                    ParHead = atual;
-                    ParTail = atual;
-                }else{
-                    ParTail.next = atual;
-                    ParTail = atual;
-                }
-            }else{
-                if(ImparHead == null){
-                    ImparHead = atual;
-                    ImparTail = atual;
-                }else{
-                    ImparTail.next = atual;
-                    ImparTail = atual;
-                }
-            }
-        atual = atual.next;
-        }
-
-        if (ImparHead == null) {
-            return false;
-        }
-
-        if(ParHead == null){
-            return false;
-        }
-
-
-        this.head = ImparHead;
-        ImparTail.next = ParHead;
-        ParTail.next = null;
-
-
-        return true;
+    public Node<T> getHead() {
+        return head;
     }
+
 }

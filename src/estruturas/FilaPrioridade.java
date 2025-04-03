@@ -1,7 +1,5 @@
 package estruturas;
 
-import classes.Pessoa;
-
 public class FilaPrioridade {
 
     NodePrior head;
@@ -33,7 +31,7 @@ public class FilaPrioridade {
         while(temp.getNext() != null && temp.getNext().getPrioridade() > prioridade){
             temp = temp.getNext();
         }
-        if(prioridade == temp.getNext().getPrioridade()){
+        if(temp.getNext() != null && prioridade == temp.getNext().getPrioridade()){
             return false;
         }
         newNode.setNext(temp.getNext());
@@ -52,10 +50,6 @@ public class FilaPrioridade {
         }
 
         if(prioridade == head.getPrioridade()){
-            if(head.getNext() == null){
-                head = null;
-                return true;
-            }
             head = head.getNext();
             return true;
         }
@@ -73,43 +67,44 @@ public class FilaPrioridade {
         return true;
     }
 
-    public boolean addElemento(int prioridade){
-        if(isEmpty()){
+    public <T> boolean addElemento(int prioridade, T elemento){
+        NodePrior temp = head;
+
+        while(temp != null && temp.getPrioridade() != prioridade){
+            temp = temp.getNext();
+        }
+
+        if(temp == null){
             addPrioridade(prioridade);
-            head.getFila().enqueue(prioridade);
-            return true;
+            temp = head;
+            while(temp.getPrioridade() != prioridade){
+                temp = temp.getNext();
+            }
         }
-
+        temp.getFila().enqueue(elemento);
+        return true;
     }
 
-    public boolean addPessoa(int prioridade){
-        Pessoa pessoa = new Pessoa(prioridade);
+    public <T> T removeElemento(){
         if(isEmpty()){
-            addPrioridade(pessoa.getPrioridade());
-            head.getFila().enqueue(pessoa);
-            return true;
-        }else{
-            NodePrior Temp = head;
-           while(Temp.getNext() != null && Temp.getNext().getPrioridade() != pessoa.getPrioridade()){
-                 Temp = Temp.getNext();
-           }
+            return null;
+        }
+        NodePrior temp = head;
+        Node<T> NodeRemovido = null;
 
-           if(Temp.getNext() == null){
-               addPrioridade(pessoa.getPrioridade);
-               Temp.getFila().enqueue(pessoa);
-
-           }else{
-
-
-
-
-           }
-
+        while(temp != null){
+            NodeRemovido = temp.getFila().dequeue();
+            if(NodeRemovido != null){
+                break;
+            }
+            temp = temp.getNext();
         }
 
+        if(NodeRemovido == null){
+            return null;
+        }
+
+        return NodeRemovido.getElemento();
     }
 
-    public Pessoa removePessoa(Pessoa pessoa){
-
-    }
 }
