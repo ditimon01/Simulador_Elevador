@@ -12,5 +12,4 @@ public class NodeDuplo<T> {
         this.next = null;
     }
 
-
 }

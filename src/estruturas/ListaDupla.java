@@ -53,6 +53,54 @@ public class ListaDupla<T> {
 
     }
 
+
+    public T remove(T elemento, int pos) {
+        if(pos < 0) return null;
+        
+        if(head == null) return null;
+
+        NodeDuplo<T> e;
+
+        if(pos == 0){
+            if(head == tail){
+                e = head;
+                head = null;
+                tail = null;
+                return e.elemento;
+            }
+            e = head;
+            head = head.next;
+            head.ant = null;
+            e.next = null;
+            return e.elemento;
+        }
+
+        NodeDuplo<T> atual = head;
+        int i = 0;
+
+        while(atual != null && i < pos){
+            atual = atual.next;
+            i++;
+        }
+        if(atual == null) return null;
+
+        if(atual == tail){
+            e = atual;
+            tail = tail.ant;
+            tail.next = null;
+            e.ant = null;
+            return e.elemento;
+        }
+
+        atual.ant.next = atual.next;
+        atual.next.ant = atual.ant;
+        atual.ant = null;
+        atual.next = null;
+        return atual.elemento;
+
+    }
+
+
     public void printLista(){
         NodeDuplo<T> atual = head;
         int i = 0;
