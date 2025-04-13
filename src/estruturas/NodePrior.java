@@ -1,7 +1,5 @@
 package estruturas;
 
-import classes.Pessoa;
-
 public class NodePrior {
 
     private NodePrior next;
@@ -26,16 +24,9 @@ public class NodePrior {
         return prioridade;
     }
 
-    public void setPrioridade(int prioridade) {
-        this.prioridade = prioridade;
-    }
-
     public FilaComum getFila() {
         return fila;
     }
 
-    public void setFila(FilaComum fila) {
-        this.fila = fila;
-    }
 
 }

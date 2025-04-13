@@ -56,7 +56,7 @@ public class ListaDupla<T> {
 
     public T remove(T elemento, int pos) {
         if(pos < 0) return null;
-        
+
         if(head == null) return null;
 
         NodeDuplo<T> e;
