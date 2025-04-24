@@ -112,6 +112,29 @@ public class ListaDinamica<T> {
     }
 
 
+    public int tamanho(){
+        int tamanho = 0;
+        Node<T> atual = head;
+        while(atual != null){
+            tamanho++;
+            atual = atual.getNext();
+        }
+        return tamanho;
+    }
+
+
+    public T getElemento(int pos){
+        Node<T> atual = head;
+        int i = 0;
+        while(atual != null && i < pos){
+            atual = atual.getNext();
+        }
+        if(atual == null){
+            return null;
+        }
+        return atual.getElemento();
+    }
+
     public Node<T> getHead() {
         return head;
     }

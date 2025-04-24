@@ -90,21 +90,22 @@ public class FilaPrioridade {
             return null;
         }
         NodePrior temp = head;
-        Node<T> NodeRemovido = null;
+        Object ElementoRemovido = null;
 
         while(temp != null){
-            NodeRemovido = temp.getFila().dequeue();
-            if(NodeRemovido != null){
+            ElementoRemovido = temp.getFila().dequeue();
+            if(ElementoRemovido != null){
                 break;
             }
             temp = temp.getNext();
         }
 
-        if(NodeRemovido == null){
+        if(ElementoRemovido == null){
             return null;
         }
 
-        return NodeRemovido.getElemento();
+        return (T) ElementoRemovido;
     }
+
 
 }

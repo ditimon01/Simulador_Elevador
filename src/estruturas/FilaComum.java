@@ -15,6 +15,8 @@ public class FilaComum<T> {
 
         Node<T> e = new Node<>(elemento);
 
+        if(head != null && elemento.getClass() != this.head.getElemento().getClass()) return;
+
         if(head == null && tail == null){
             head = e;
             tail = e;
@@ -26,7 +28,7 @@ public class FilaComum<T> {
         empty = false;
     }
 
-    public Node<T> dequeue(){
+    public T dequeue(){
 
         if(empty){
             return null;
@@ -40,7 +42,7 @@ public class FilaComum<T> {
             head = null;
             tail = null;
             empty = true;
-            return e;
+            return e.getElemento();
         }
 
         Node<T> atual = head;
@@ -51,7 +53,7 @@ public class FilaComum<T> {
 
         tail = atual;
         atual.setNext(null);
-        return e;
+        return e.getElemento();
 
     }
 

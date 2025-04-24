@@ -24,9 +24,7 @@ public class NodePrior {
         return prioridade;
     }
 
-    public FilaComum getFila() {
-        return fila;
-    }
+    public FilaComum getFila() { return fila; }
 
 
 }

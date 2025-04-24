@@ -1,25 +1,47 @@
 package classes;
 
-import estruturas.FilaComum;
-import estruturas.ListaDinamica;
+import estruturas.FilaPrioridade;
 
 public class Andar {
 
     private int numero;
-    private ListaDinamica<Pessoa> lista;
+    private FilaPrioridade fila;
+    private Painel painel;
 
     public Andar(int numero){
         this.numero = numero;
-        lista = new ListaDinamica<>(); //trocar por fila de prioridade
+        fila = new FilaPrioridade();
+        this.painel = new Painel();
+    }
+
+
+    public void adicionarPessoa(Pessoa x) {
+        fila.addElemento(x.getPrioridade(), x);
+        System.out.println("Pessoa " + x.getId() + " adicionada no andar " + numero);
+
+        if(x.getAndarDestino() > numero) {painel.botaoSubirEstaAtivado();}
+        else {painel.botaoDescerEstaAtivado();}
+    }
+
+
+    public Pessoa removerPessoa() {
+
+        if(!fila.isEmpty()) {
+            return fila.removeElemento();
+        }
+        return null;
+    }
+
+
+    public boolean temChamada(){
+        return painel.botaoSubirEstaAtivado() || painel.botaoDescerEstaAtivado();
     }
 
     public int getNumero() {
         return numero;
     }
 
-    public void adicionar(Pessoa p) {
-        //adicionar baseado na prioridade da pessoa
+    public Painel getPainel() {
+        return painel;
     }
-
-    //criar getFilaPrioridade
 }

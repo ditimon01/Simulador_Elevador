@@ -1,6 +1,15 @@
 package estruturas;
 
 public class Node<T> {
+
+    private T elemento;
+    private Node<T> next;
+
+    public Node(T elemento) {
+        this.elemento = elemento;
+        this.next = null;
+    }
+
     public T getElemento() {
         return elemento;
     }
@@ -15,14 +24,6 @@ public class Node<T> {
 
     public void setNext(Node<T> next) {
         this.next = next;
-    }
-
-    private T elemento;
-    private Node<T> next;
-
-    public Node(T elemento) {
-        this.elemento = elemento;
-        this.next = null;
     }
 
 }

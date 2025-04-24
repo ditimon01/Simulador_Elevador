@@ -71,5 +71,13 @@ public class ListaEstatica<T> {
             return retorno;
 
         }
+
+    public int getTamanho() {
+        return tamanho;
+    }
+
+    public T[] getVetor() {
+        return vetor;
+    }
 }
 
