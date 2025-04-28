@@ -7,15 +7,17 @@ import java.util.TimerTask;
 public class Simulador implements Serializable {
 
     private int minutosSimulados;
-    private int velocidadeMs;
+    private final int velocidadeMs;
     private transient  Timer temporizador;
     private boolean emExecucao;
     private Predio predio;
+    private final int duracaoSimulacao;
 
-    public Simulador(int minutosSimulados, int velocidadeMs, int temporizador, int andares, int elevadores) {
+    public Simulador(int duracaoSimulacao, int velocidadeMs, int andares, int elevadores) {
         this.minutosSimulados = 0;
         this.velocidadeMs = velocidadeMs;
         this.predio = new Predio(andares, elevadores);
+        this.duracaoSimulacao = duracaoSimulacao;
     }
 
     public void iniciar(){
@@ -42,7 +44,7 @@ public class Simulador implements Serializable {
         }
     }
 
-    //verificar se é a mesma coisa que pausar
+    //verificar se é o mesmo que pausar
     public void encerrar(){
         if(temporizador != null)
             temporizador.cancel();
@@ -50,11 +52,15 @@ public class Simulador implements Serializable {
             System.out.println("Simulação encerrada");
     }
 
-    private void iniciarTemporizador(){
+    public void iniciarTemporizador(){
           temporizador = new Timer();
           temporizador.scheduleAtFixedRate(new TimerTask() {
               public void run() {
-                  predio.atualizar(minutosSimulados++);
+                  if(minutosSimulados < duracaoSimulacao) {
+                      predio.atualizar(minutosSimulados++);
+                  }else{
+                      encerrar();
+                  }
               }
           }, 0, velocidadeMs);
     }

@@ -6,13 +6,14 @@ import estruturas.ListaEstatica;
 
 public class Predio extends Serializacao {
 
-    private ListaEstatica<Andar> andares;
-    private CentralDeControle centralDeControle;
-    private Random randomizacao;
+    private final ListaEstatica<Andar> andares;
+    private final CentralDeControle centralDeControle;
+    private final Random randomizacao;
 
 
     public Predio(int numeroAndares, int numeroElevadores){
-        this.andares = new ListaEstatica(numeroAndares);
+        this.andares = new ListaEstatica<>(numeroAndares);
+        this.randomizacao = new Random();
         for (int i = 0; i < numeroAndares; i++){
             andares.add(new Andar(i),i);
         }
@@ -29,13 +30,13 @@ public class Predio extends Serializacao {
                 andarDestino = randomizacao.GeradorDeNumeroAleatorio(andares.getTamanho());
             }
             Pessoa p = new Pessoa(minutosSimulados, randomizacao.GeradorDeNumeroAleatorio(3) , andarOrigem, andarDestino);
-            andares.getVetor()[andarOrigem].adicionarPessoa(p);
+            andares.getElemento(andarOrigem).adicionarPessoa(p);
         }
 
         centralDeControle.atualizar(minutosSimulados);
     }
 
-    public CentralDeControle getCentralDeControle() { return centralDeControle; }
+
     public ListaEstatica<Andar> getAndares() { return andares;}
 
 

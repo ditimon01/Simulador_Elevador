@@ -1,5 +1,7 @@
 package estruturas;
 
+import java.util.Arrays;
+
 public class ListaEstatica<T> {
 
         private int tamanho;
@@ -76,8 +78,11 @@ public class ListaEstatica<T> {
         return tamanho;
     }
 
-    public T[] getVetor() {
-        return vetor;
+    public T getElemento(int pos){
+            if(pos > ultimo || pos < 0){
+                return null;
+            }
+        return vetor[pos];
     }
 }
 

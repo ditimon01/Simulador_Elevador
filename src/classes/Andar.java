@@ -19,8 +19,8 @@ public class Andar {
         fila.addElemento(x.getPrioridade(), x);
         System.out.println("Pessoa " + x.getId() + " adicionada no andar " + numero);
 
-        if(x.getAndarDestino() > numero) {painel.botaoSubirEstaAtivado();}
-        else {painel.botaoDescerEstaAtivado();}
+        if(x.getAndarDestino() > numero) {painel.pressionarSubir();}
+        else {painel.pressionarDescer();}
     }
 
 

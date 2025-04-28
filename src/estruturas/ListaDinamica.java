@@ -43,16 +43,16 @@ public class ListaDinamica<T> {
     }
 
 
-    public boolean remove(int pos){
+    public void remove(int pos){
         if(pos < 0 || head == null){
-            return false;
+            return;
         }
 
         if(pos == 0){
             Node<T> e = head;
             head = head.getNext();
             e.setNext(null);
-            return true;
+            return;
         }
 
         Node<T> atual = head;
@@ -64,13 +64,12 @@ public class ListaDinamica<T> {
         }
 
         if(atual == null){
-            return false;
+            return;
         }
 
         Node<T> e = atual.getNext();
         atual.setNext(e.getNext());
         e.setNext(null);
-        return true;
     }
 
 

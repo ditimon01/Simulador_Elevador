@@ -3,8 +3,8 @@ package classes;
 import java.io.Serializable;
 
 public class Pessoa implements Serializable {
-    private int id;
-    private int prioridade;
+    private final int id;
+    private final int prioridade;
     private int andarOrigem;
     private int andarDestino;
     private boolean dentroElevador;

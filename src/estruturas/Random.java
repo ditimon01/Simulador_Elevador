@@ -2,12 +2,19 @@ package estruturas;
 
 public class Random {
 
-    private long NovaSeed = System.currentTimeMillis();;
+    private long NovaSeed;
+
+    public Random() {
+        this.NovaSeed = System.currentTimeMillis();
+    }
 
     public int GeradorDeNumeroAleatorio(int escopo) {
 
-        NovaSeed =(NovaSeed * 6364589395839590L + 1) % Long.MAX_VALUE;
-        return (int)(NovaSeed % escopo);
+        if(escopo <= 0){
+            throw new IllegalArgumentException("Escopo deve ser maior que zero");
+        }
+        NovaSeed =(NovaSeed * 6364136223846793005L + 1) & Long.MAX_VALUE; //usa a operação AND com o maior "Long" possível, para garantir que o número seja positivo
+        return (int)(NovaSeed % escopo); //utiliza o resto da divisão pelo escopo para garantir que o número seja menor que o escopo
     }
 
 }

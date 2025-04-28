@@ -21,8 +21,8 @@ public class Deque<T> {
 
         System.out.println();
         while(atual != null){
-            System.out.println("\t" + cont + ". " + atual.elemento);
-            atual = atual.next;
+            System.out.println("\t" + cont + ". " + atual.getElemento());
+            atual = atual.getNext();
             cont++;
         }
     }
@@ -33,8 +33,8 @@ public class Deque<T> {
 
         if(isEmpty()) right = newNode;
         else{
-            left.ant = newNode;
-            newNode.next = left;
+            left.setAnt(newNode);
+            newNode.setNext(left);
         }
         size++;
         left = newNode;
@@ -46,8 +46,9 @@ public class Deque<T> {
 
         if(isEmpty()) this.left = newNode;
         else{
-            right.next = newNode;
-            newNode.ant = right;
+            right.setNext(newNode);
+            newNode.setAnt(right);
+
         }
         size++;
         this.right = newNode;
@@ -56,15 +57,15 @@ public class Deque<T> {
     public T popLeft(){
         if(isEmpty()) return null;
 
-        T elemento = left.elemento;
+        T elemento = left.getElemento();
 
         if(left == right){
             left = null;
             right = null;
             return elemento;
         }
-        left = left.next;
-        left.ant = null;
+        left = left.getNext();
+        left.setAnt(null);
         size--;
         return elemento;
     }
@@ -72,25 +73,25 @@ public class Deque<T> {
     public T popRight(){
         if(isEmpty()) return null;
 
-        T elemento = right.elemento;
+        T elemento = right.getElemento();
 
         if(left == right){
             left = null;
             right = null;
         }else {
-            right = right.ant;
-            right.next = null;
+            right = right.getAnt();
+            right.setNext(null);
         }
         size--;
         return elemento;
     }
 
     public T firstLeft(){
-        return isEmpty() ? null : left.elemento;
+        return isEmpty() ? null : left.getElemento();
     }
 
     public T firstRight(){
-        return isEmpty() ? null : right.elemento;
+        return isEmpty() ? null : right.getElemento();
     }
 
 
@@ -113,12 +114,12 @@ public class Deque<T> {
     public void leftToRight(){
         if(isEmpty()) return;
         if(left == right) return;
-        left.ant = right;
-        right.next = left;
-        left = left.next;
-        left.ant = null;
-        right = right.next;
-        right.next = null;
+        left.setAnt(right);
+        right.setNext(left);
+        left = left.getNext();
+        left.setAnt(null);
+        right = right.getNext();
+        right.setNext(null);
     }
 
 
@@ -126,12 +127,12 @@ public class Deque<T> {
     public void rightToLeft(){
         if(isEmpty()) return;
         if(left == right) return;
-        left.ant = right;
-        right.next = left;
-        right = right.ant;
-        right.next = null;
-        left = left.ant;
-        left.ant = null;
+        left.setAnt(right);
+        right.setNext(left);
+        right = right.getAnt();
+        right.setNext(null);
+        left = left.getAnt();
+        left.setAnt(null);
     }
 
     public void rotationRightToLeft(int quantidade){

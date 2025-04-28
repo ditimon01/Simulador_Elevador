@@ -18,7 +18,7 @@ public class CentralDeControle extends Serializacao  {
     @Override
     public void atualizar(int minutosSimulados) {
         for(int i = 0; i < elevadores.getTamanho(); i++){
-            Elevador elevador = elevadores.getVetor()[i];
+            Elevador elevador = elevadores.getElemento(i);
             elevador.atualizar(minutosSimulados);
 
             if(elevador.getEstado() == Elevador.EstadoElevador.PARADO){
@@ -32,13 +32,13 @@ public class CentralDeControle extends Serializacao  {
         // sempre verifica as chamadas do andar terreo ao topo
         // modificar para verificar os andares mais proximos ao elevador primeiro
         for(int i = 0; i < predio.getAndares().getTamanho(); i++){
-            Andar andar = predio.getAndares().getVetor()[i];
+            Andar andar = predio.getAndares().getElemento(i);
             if(andar.temChamada()){
                 if(elevador.getAndarAtual() == andar.getNumero()){
                     addPessoas(elevador, andar);
                 }else{
                     elevador.setDestino(andar.getNumero());
-                    System.out.println("Elevador " + elevador.getAndarAtual() + " destino " + andar.getNumero() + " com destino definido para o andar " + andar.getNumero());
+                    System.out.println("Elevador " + elevador.getNumeroElevador() + " com destino definido para o andar " + andar.getNumero());
                     break;
                 }
             }
@@ -50,6 +50,8 @@ public class CentralDeControle extends Serializacao  {
         Pessoa p = andar.removerPessoa();
         while(p != null && elevador.getPessoasDentro().tamanho() < Elevador.getCapacidadeMaxima()){
             elevador.adicionarPessoa(p);
+            elevador.setDestino(p.getAndarDestino());
+            System.out.println("Elevador " + elevador.getNumeroElevador() + " com destino definido para o andar " + p.getAndarDestino());
             p = andar.removerPessoa();
         }
         andar.getPainel().resetar();

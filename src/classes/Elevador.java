@@ -2,12 +2,11 @@ package classes;
 
 import estruturas.ListaDinamica;
 
-
 public class Elevador extends Serializacao {
 
-    private final int numerodoElevador;// id do elevador
+    private final int numeroElevador;// id do elevador
     private int andarAtual;// andar onde o elevador está
-    private int destino;// andar para onde o elevador irá
+    private int destino;// andar para onde o elevador irá (trocar para uma lista, para armazenar o destino de todas as pessoas dentro do elevador)
     private ListaDinamica<Pessoa> pessoasDentro;// lista de pessoas dentro do elevador
     private static final int CAPACIDADE_MAXIMA = 10;// capacidade máxima de pessoas dentro do elevador
     private EstadoElevador estado;// estado atual do elevador, se está subindo, descendo ou parado
@@ -19,7 +18,7 @@ public class Elevador extends Serializacao {
 
 
     public Elevador(int numero) {
-        this.numerodoElevador = numero;
+        this.numeroElevador = numero;
         this.andarAtual = 0;
         this.destino = 0;
         this.pessoasDentro = new ListaDinamica<>();
@@ -27,31 +26,33 @@ public class Elevador extends Serializacao {
     }
 
 
-    @Override
     // método para atualizar o elevador a cada minuto simulado
+    @Override
     public void atualizar(int minutosSimulados){
-        System.out.println("Elevador " + numerodoElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
 
         if(andarAtual < destino){
             estado = EstadoElevador.SUBINDO;
+            System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
             andarAtual++;
         }else if(andarAtual > destino){
             estado = EstadoElevador.DESCENDO;
+            System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
             andarAtual--;
         }else{
             estado = EstadoElevador.PARADO;
-            desembarquePessoas(minutosSimulados); //desembarca as pessoas caso seja o andar de destino delas
+            System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
+            desembarquePessoas(); //desembarca as pessoas caso seja o andar de destino delas
         }
     }
 
 
-    private void desembarquePessoas(int minutosSimulados) {
-        for(int i = 0; i < pessoasDentro.tamanho(); i++){
+    private void desembarquePessoas() {
+        for(int i = 0; i < pessoasDentro.tamanho(); i++){ //percorre a lista de pessoas dentro do elevador
             Pessoa p = pessoasDentro.getElemento(i);
-            if(p.getAndarDestino() == andarAtual){
+            if(p!=null && p.getAndarDestino() == andarAtual){ //compara o andar de destino de cada pessoa dentro do elevador
                 p.sairElevador();
                 pessoasDentro.remove(i);
-                System.out.println("Pessoa" + p.getId() + " desembarcou no andar " + andarAtual);
+                System.out.println("Pessoa " + p.getId() + " desembarcou no andar " + andarAtual);
             }
         }
     }
@@ -59,9 +60,10 @@ public class Elevador extends Serializacao {
 
     public void adicionarPessoa(Pessoa p){
         if(pessoasDentro.tamanho() < CAPACIDADE_MAXIMA){
-            pessoasDentro.add(p, pessoasDentro.tamanho() + 1); //editar após adicionar fila de prioridade
+            pessoasDentro.add(p, pessoasDentro.tamanho());
             p.entrarElevador();
-            System.out.println("Pessoa " + p.getId() + " entrou no elevador " + numerodoElevador);
+            System.out.println("Pessoa " + p.getId() + " entrou no elevador " + numeroElevador);
+
         }
     }
 
@@ -85,4 +87,6 @@ public class Elevador extends Serializacao {
     public static int getCapacidadeMaxima() {
         return CAPACIDADE_MAXIMA;
     }
+
+    public int getNumeroElevador() { return numeroElevador; }
 }
