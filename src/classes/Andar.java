@@ -33,6 +33,25 @@ public class Andar {
     }
 
 
+    public void verificaPessoas(){
+        if(fila.isEmpty()){
+            painel.resetar();
+        }
+        Pessoa atual = fila.getPrimeiroElemento();
+
+        while(atual != null){
+            if(painel.botaoSubirEstaAtivado() && painel.botaoDescerEstaAtivado()) break;
+            if(atual.getAndarDestino() < numero){
+                painel.pressionarDescer();
+            }
+            else {
+                painel.pressionarSubir();
+            }
+            atual = fila.getPrimeiroElemento();// consertar para incrementar após colocar nós duplos na fila comum
+        }
+    }
+
+
     public boolean temChamada(){
         return painel.botaoSubirEstaAtivado() || painel.botaoDescerEstaAtivado();
     }

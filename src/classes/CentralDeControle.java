@@ -19,11 +19,11 @@ public class CentralDeControle extends Serializacao  {
     public void atualizar(int minutosSimulados) {
         for(int i = 0; i < elevadores.getTamanho(); i++){
             Elevador elevador = elevadores.getElemento(i);
-            elevador.atualizar(minutosSimulados);
 
             if(elevador.getEstado() == Elevador.EstadoElevador.PARADO){
                 receberPessoas(elevador);
             }
+            elevador.atualizar(minutosSimulados);
         }
     }
 
@@ -47,14 +47,17 @@ public class CentralDeControle extends Serializacao  {
 
 
     private void addPessoas(Elevador elevador, Andar andar){
-        Pessoa p = andar.removerPessoa();
-        while(p != null && elevador.getPessoasDentro().tamanho() < Elevador.getCapacidadeMaxima()){
+
+        while(elevador.getPessoasDentro().tamanho() < Elevador.getCapacidadeMaxima()){
+            Pessoa p = andar.removerPessoa();
+            if(p == null) break;
             elevador.adicionarPessoa(p);
             elevador.setDestino(p.getAndarDestino());
-            System.out.println("Elevador " + elevador.getNumeroElevador() + " com destino definido para o andar " + p.getAndarDestino());
-            p = andar.removerPessoa();
+            System.out.println("Elevador " + elevador.getNumeroElevador() + " com destino definido para o andar " + elevador.getDestino());
         }
-        andar.getPainel().resetar();
+
+        andar.verificaPessoas();
+
     }
 
 

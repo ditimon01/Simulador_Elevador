@@ -108,4 +108,13 @@ public class FilaPrioridade {
     }
 
 
+    public <T> T getPrimeiroElemento(){
+        if(isEmpty()){
+            return null;
+        }
+        return (T) head.getFila().getTail();
+    }
+
+
+
 }

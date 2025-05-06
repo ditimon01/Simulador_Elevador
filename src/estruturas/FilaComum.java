@@ -57,4 +57,7 @@ public class FilaComum<T> {
 
     }
 
+    public Node<T> getTail() {
+        return tail;
+    }
 }

@@ -5,7 +5,7 @@ public class Random {
     private long NovaSeed;
 
     public Random() {
-        this.NovaSeed = System.currentTimeMillis();
+        this.NovaSeed = System.currentTimeMillis(); // atribui o valor do milissegundo atual em forma de número
     }
 
     public int GeradorDeNumeroAleatorio(int escopo) {
