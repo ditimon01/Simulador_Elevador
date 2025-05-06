@@ -54,4 +54,8 @@ public class FilaComum<T> {
     public NodeDuplo<T> getTail() {
         return tail;
     }
+
+    public NodeDuplo<T> getHead() {
+        return head;
+    }
 }

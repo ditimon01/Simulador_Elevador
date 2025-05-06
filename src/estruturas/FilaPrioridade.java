@@ -112,7 +112,7 @@ public class FilaPrioridade {
         if(isEmpty()){
             return null;
         }
-        return (T) head.getFila().getTail();
+        return (T) head.getFila().getHead();
     }
 
 
