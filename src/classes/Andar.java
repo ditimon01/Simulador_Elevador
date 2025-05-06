@@ -1,6 +1,7 @@
 package classes;
 
 import estruturas.FilaPrioridade;
+import estruturas.NodeDuplo;
 
 public class Andar {
 
@@ -37,17 +38,17 @@ public class Andar {
         if(fila.isEmpty()){
             painel.resetar();
         }
-        Pessoa atual = fila.getPrimeiroElemento();
+        NodeDuplo<Pessoa> atual = fila.getPrimeiroElemento();
 
         while(atual != null){
             if(painel.botaoSubirEstaAtivado() && painel.botaoDescerEstaAtivado()) break;
-            if(atual.getAndarDestino() < numero){
+            if(atual.getElemento().getAndarDestino() < numero){
                 painel.pressionarDescer();
             }
             else {
                 painel.pressionarSubir();
             }
-            atual = fila.getPrimeiroElemento();// consertar para incrementar após colocar nós duplos na fila comum
+            atual = atual.getNext();// consertar para incrementar após colocar nós duplos na fila comum
         }
     }
 
