@@ -1,19 +1,18 @@
 package estruturas;
 
 public class FilaComum<T> {
-    private Node<T> head;
-    private Node<T> tail;
-    private boolean empty;
+    private NodeDuplo<T> head;
+    private NodeDuplo<T> tail;
+
 
     public FilaComum() {
         this.head = null;
         this.tail = null;
-        this.empty = true;
     }
 
     public void enqueue(T elemento){
 
-        Node<T> e = new Node<>(elemento);
+        NodeDuplo<T> e = new NodeDuplo<>(elemento);
 
         if(head != null && elemento.getClass() != this.head.getElemento().getClass()) return;
 
@@ -22,42 +21,37 @@ public class FilaComum<T> {
             tail = e;
         }
         else{
-            e.setNext(head);
-            head = e;
+            tail.setNext(e);
+            e.setAnt(tail);
+            tail = e;
         }
-        empty = false;
     }
 
     public T dequeue(){
 
-        if(empty){
+        if(isEmpty()){
             return null;
         }
 
-        Node<T> e;
-        e = tail;
+        NodeDuplo<T> e = head;
 
         if(head == tail){
-
             head = null;
             tail = null;
-            empty = true;
-            return e.getElemento();
+        }else{
+            head = head.getNext();
+            head.setAnt(null);
         }
 
-        Node<T> atual = head;
-
-        while(atual.getNext() != e){
-            atual = atual.getNext();
-        }
-
-        tail = atual;
-        atual.setNext(null);
         return e.getElemento();
 
     }
 
-    public Node<T> getTail() {
+    public boolean isEmpty(){
+        return head == null;
+    }
+
+    public NodeDuplo<T> getTail() {
         return tail;
     }
 }
