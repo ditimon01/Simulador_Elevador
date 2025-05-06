@@ -52,7 +52,7 @@ public class CentralDeControle extends Serializacao  {
             Pessoa p = andar.removerPessoa();
             if(p == null) break;
             elevador.adicionarPessoa(p);
-            elevador.setDestino(p.getAndarDestino());
+            elevador.setDestino(p.getAndarDestino());// consertar para verificar os primeiros destinos
             System.out.println("Elevador " + elevador.getNumeroElevador() + " com destino definido para o andar " + elevador.getDestino());
         }
 
