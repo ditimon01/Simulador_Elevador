@@ -1,6 +1,8 @@
 package estruturas;
 
-public class FilaComum<T> {
+import java.io.Serializable;
+
+public class FilaComum<T> implements Serializable {
     private NodeDuplo<T> head;
     private NodeDuplo<T> tail;
 

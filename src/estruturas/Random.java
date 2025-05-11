@@ -1,6 +1,8 @@
 package estruturas;
 
-public class Random {
+import java.io.Serializable;
+
+public class Random implements Serializable {
 
     private long NovaSeed;
 

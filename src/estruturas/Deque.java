@@ -1,6 +1,8 @@
 package estruturas;
 
-public class Deque<T> {
+import java.io.Serializable;
+
+public class Deque<T> implements Serializable {
     private NodeDuplo<T> left;
     private NodeDuplo<T> right;
     private int size;

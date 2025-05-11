@@ -1,6 +1,8 @@
 package estruturas;
 
-public class FilaPrioridade {
+import java.io.Serializable;
+
+public class FilaPrioridade implements Serializable {
 
     NodePrior head;
 

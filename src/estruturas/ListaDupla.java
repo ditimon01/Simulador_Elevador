@@ -1,6 +1,8 @@
 package estruturas;
 
-public class ListaDupla<T> {
+import java.io.Serializable;
+
+public class ListaDupla<T> implements Serializable {
     private NodeDuplo<T> head;
     private NodeDuplo<T> tail;
 

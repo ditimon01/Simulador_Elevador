@@ -1,6 +1,8 @@
 package estruturas;
 
-public class NodePrior {
+import java.io.Serializable;
+
+public class NodePrior implements Serializable {
 
     private NodePrior next;
     private int prioridade;

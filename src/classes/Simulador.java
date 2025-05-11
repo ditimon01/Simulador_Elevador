@@ -67,7 +67,9 @@ public class Simulador implements Serializable {
 
 
     public void gravar(String nomeArquivo) {
-        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(nomeArquivo))) {
+        File arquivo = new File("saves", nomeArquivo);
+
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             out.writeObject(this);
             System.out.println("Simulação gravada com sucesso em : " + nomeArquivo);
         }catch (IOException e){
@@ -76,7 +78,9 @@ public class Simulador implements Serializable {
     }
 
     public static Simulador carregar(String nomeArquivo) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(nomeArquivo))) {
+        File arquivo = new File("saves", nomeArquivo);
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo))) {
             Simulador sim = (Simulador) in.readObject();
             sim.continuar();
             return sim;

@@ -1,6 +1,8 @@
 package estruturas;
 
-public class NodeDuplo<T> {
+import java.io.Serializable;
+
+public class NodeDuplo<T> implements Serializable {
 
     private NodeDuplo<T> ant;
     private T elemento;
