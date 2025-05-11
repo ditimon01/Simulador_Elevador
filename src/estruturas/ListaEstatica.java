@@ -9,7 +9,6 @@ public class ListaEstatica<T> implements Serializable {
         private T[] vetor;
         private int ultimo;
 
-        int i;
 
         public ListaEstatica(int n){
             this.tamanho = n;
@@ -18,13 +17,13 @@ public class ListaEstatica<T> implements Serializable {
         }
 
         public void printarLista(){
-            for(i = 0;i <= ultimo;i++){
+            for(int i = 0;i <= ultimo;i++){
                 System.out.println(i + ". " + vetor[i]);
             }
         }
 
         public boolean add(T elemento, int pos){
-            i = tamanho;
+            int i = tamanho;
 
             if (pos > ultimo + 1 || pos < 0 || ultimo + 1 >= tamanho){
                 return false;
@@ -40,7 +39,7 @@ public class ListaEstatica<T> implements Serializable {
         }
 
         public boolean remove(int pos){
-            i = 0;
+            int i = 0;
             if(pos < 0 || pos > ultimo){
                 return false;
             }
@@ -59,7 +58,7 @@ public class ListaEstatica<T> implements Serializable {
 
             System.out.println("Buscando o elemento " + elemento);
 
-            for(i = 0; i <= ultimo; i++){
+            for(int i = 0; i <= ultimo; i++){
                 if(elemento == vetor[i]){
                     System.out.println("Elemento encontrado na posição : " + i);
                     retorno = true;
@@ -80,6 +79,9 @@ public class ListaEstatica<T> implements Serializable {
                 return false;
             }
             vetor[pos] = elemento;
+            if(pos > ultimo){
+                ultimo = pos;
+            }
             return true;
         }
 

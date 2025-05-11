@@ -96,6 +96,24 @@ public class ListaDinamica<T> implements Serializable {
     }
 
 
+    public void set(T elemento, int pos){
+        if(pos < 0 || head == null){
+            return;
+        }
+
+        Node<T> atual = head;
+        int i = 0;
+
+        while(atual != null && i < pos){
+            atual = atual.getNext();
+            i++;
+        }
+        if(atual != null){
+            atual.setElemento(elemento);
+        }
+    }
+
+
     public void print(){
         Node<T> atual = head;
         int i = 0;

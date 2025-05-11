@@ -37,10 +37,9 @@ public class Andar implements Serializable {
 
 
     public void verificaPessoas(){
-        if(fila.isEmpty()){
-            painel.resetar();
-            return;
-        }
+
+        this.painel.reset();
+
 
         boolean subir = false;
         boolean descer = false;
@@ -63,7 +62,11 @@ public class Andar implements Serializable {
 
 
     public boolean temChamada(){
-        return painel.botaoSubirEstaAtivado() || painel.botaoDescerEstaAtivado();
+        return painel.SubirEstaAtivado() || painel.DescerEstaAtivado();
+    }
+
+    public boolean isEmpty() {
+        return fila.isEmpty();
     }
 
     public int getNumero() {

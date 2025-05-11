@@ -29,43 +29,50 @@
 
 
         public void addDestino(int destino){
-            if(!destinos.contem(destino)){
+            if(destino != andarAtual && !destinos.contem(destino)){
                 destinos.add(destino, destinos.tamanho());
+                ordenarDestinos();
             }
         }
 
-
-        public void atualizarDestino(){
-            this.destino = calcularProximoDestino();
-        }
-
-
-        public int calcularProximoDestino(){
-
-            if(destinos.tamanho() == 0) return andarAtual;
-
-            int proximoDestino = destinos.getElemento(0);
-            int menorDistancia = Math.abs(proximoDestino - andarAtual);
-
-            for(int i = 0; i < destinos.tamanho(); i++){
-                int destinoTemp = destinos.getElemento(i);
-                int distancia = Math.abs(destinos.getElemento(i) - andarAtual);
-
-                if((estado == EstadoElevador.SUBINDO && destinoTemp > andarAtual) || (estado == EstadoElevador.DESCENDO && destinoTemp < andarAtual)){
-                    distancia = distancia/2;
-                }
-                if(distancia < menorDistancia ){
-                    menorDistancia = distancia;
-                    proximoDestino = destinoTemp;
+        private void ordenarDestinos(){
+            for(int i = 0; i < destinos.tamanho() - 1; i++){
+                for(int j = i + 1; j < destinos.tamanho(); j++){
+                    int distancia1 = Math.abs(destinos.getElemento(i) - andarAtual);
+                    int distancia2 = Math.abs(destinos.getElemento(j) - andarAtual);
+                    if(distancia2 < distancia1){
+                        int temp = destinos.getElemento(i);
+                        destinos.set(destinos.getElemento(j), i);
+                        destinos.set(temp, j);
+                    }
                 }
             }
-
-            return proximoDestino;
         }
 
+        public void atualizarDestino() {
+
+            if (destinos.tamanho() == 0) {
+                this.destino = -1;
+                return;
+            }
+
+            this.destino = destinos.getElemento(0);
+
+            System.out.print("Destinos atuais: ");
+            for (int i = 0; i < destinos.tamanho(); i++) {
+                System.out.print(destinos.getElemento(i) + " ");
+            }
+            System.out.println();
+        }
 
         public void removeDestino(int destino){
-            this.destinos.removePorElemento(destino);
+            for(int i = 0; i < destinos.tamanho(); i++){
+                if(destinos.getElemento(i) == destino){
+                    destinos.removePorPosicao(i);
+                    break;
+                }
+            }
+            ordenarDestinos();
         }
 
 
@@ -79,7 +86,13 @@
                 return;
             }
 
-            this.destino = calcularProximoDestino();
+            if(andarAtual == destino){
+                estado = EstadoElevador.PARADO;
+                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
+                desembarquePessoas();
+                atualizarDestino();
+                return;
+            }
 
             if(andarAtual < destino){
                 estado = EstadoElevador.SUBINDO;
@@ -89,10 +102,6 @@
                 estado = EstadoElevador.DESCENDO;
                 System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
                 andarAtual--;
-            }else{
-                estado = EstadoElevador.PARADO;
-                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
-                desembarquePessoas(); //desembarca as pessoas caso seja o andar de destino delas
             }
 
         }
@@ -119,10 +128,10 @@
                 pessoasDentro.add(p, pessoasDentro.tamanho());
                 p.entrarElevador();
                 System.out.println("Pessoa " + p.getId() + " entrou no elevador " + numeroElevador);
-
+                addDestino(p.getAndarDestino());
+            } else {
+                System.out.println("Elevador " + numeroElevador + " está cheio. Pessoa " + p.getId() + " não entrou.");
             }
-
-            removeDestino(andarAtual);
         }
 
 
@@ -146,4 +155,6 @@
         }
 
         public int getNumeroElevador() { return numeroElevador; }
+
+        public ListaDinamica<Integer> getDestinos() { return destinos; }
     }
