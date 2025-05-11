@@ -1,8 +1,9 @@
 package estruturas;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class ListaEstatica<T> {
+public class ListaEstatica<T> implements Serializable {
 
         private int tamanho;
         private T[] vetor;
@@ -72,6 +73,14 @@ public class ListaEstatica<T> {
 
             return retorno;
 
+        }
+
+        public boolean set(T elemento, int pos){
+            if(pos < 0 || pos > ultimo){
+                return false;
+            }
+            vetor[pos] = elemento;
+            return true;
         }
 
     public int getTamanho() {

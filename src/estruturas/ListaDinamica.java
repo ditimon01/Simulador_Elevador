@@ -1,6 +1,8 @@
 package estruturas;
 
-public class ListaDinamica<T> {
+import java.io.Serializable;
+
+public class ListaDinamica<T> implements Serializable {
 
     private Node<T> head;
 
@@ -43,7 +45,7 @@ public class ListaDinamica<T> {
     }
 
 
-    public void remove(int pos){
+    public void removePorPosicao(int pos){
         if(pos < 0 || head == null){
             return;
         }
@@ -73,7 +75,28 @@ public class ListaDinamica<T> {
     }
 
 
-    public void printLista(){
+    public void removePorElemento(T elemento){
+        if(head == null){
+            return;
+        }
+
+        if(head != null && head.getElemento().equals(elemento)){
+            head = head.getNext();
+        }
+
+        Node<T> atual = head;
+
+        while(atual != null && atual.getNext() != null){
+            if(atual.getNext().getElemento().equals(elemento)){
+                atual.setNext(atual.getNext().getNext());
+            }else {
+                atual = atual.getNext();
+            }
+        }
+    }
+
+
+    public void print(){
         Node<T> atual = head;
         int i = 0;
 
@@ -127,12 +150,26 @@ public class ListaDinamica<T> {
         int i = 0;
         while(atual != null && i < pos){
             atual = atual.getNext();
+            i++;
         }
         if(atual == null){
             return null;
         }
         return atual.getElemento();
     }
+
+
+    public boolean contem(T elemento){
+        Node<T> atual = head;
+        while(atual != null){
+            if(atual.getElemento() == elemento){
+                return true;
+            }
+            atual = atual.getNext();
+        }
+        return false;
+    }
+
 
     public Node<T> getHead() {
         return head;

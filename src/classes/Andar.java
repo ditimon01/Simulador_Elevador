@@ -3,7 +3,9 @@ package classes;
 import estruturas.FilaPrioridade;
 import estruturas.NodeDuplo;
 
-public class Andar {
+import java.io.Serializable;
+
+public class Andar implements Serializable {
 
     private int numero;
     private FilaPrioridade fila;
@@ -37,19 +39,26 @@ public class Andar {
     public void verificaPessoas(){
         if(fila.isEmpty()){
             painel.resetar();
+            return;
         }
+
+        boolean subir = false;
+        boolean descer = false;
+
         NodeDuplo<Pessoa> atual = fila.getPrimeiroElemento();
 
         while(atual != null){
-            if(painel.botaoSubirEstaAtivado() && painel.botaoDescerEstaAtivado()) break;
-            if(atual.getElemento().getAndarDestino() < numero){
-                painel.pressionarDescer();
+            if(atual.getElemento().getAndarDestino() > numero){
+                subir = true;
             }
-            else {
-                painel.pressionarSubir();
+            else if(atual.getElemento().getAndarDestino() < numero){
+                descer = true;
             }
-            atual = atual.getNext();// consertar para incrementar após colocar nós duplos na fila comum
+            if(subir && descer) break;
+            atual = atual.getNext();
         }
+        if(subir) painel.pressionarSubir();
+        if(descer) painel.pressionarDescer();
     }
 
 
