@@ -1,19 +1,50 @@
 package classes;
 
-import java.io.Serializable;
+import estruturas.ListaEstatica;
+import estruturas.Random;
 
-public class Pessoa implements Serializable {
+
+public class Pessoa extends Serializacao {
     private final int id;
     private final int prioridade;
+    private int contadorDeDestinos;
     private int andarOrigem;
     private int andarDestino;
+    private final ListaEstatica<Integer> destinos;
+    private int andarAtual;
     private boolean dentroElevador;
+    private int tempoAndar;
 
-    public Pessoa(int id, int prioridade, int origem, int destino) {
+    public Pessoa(int id, int prioridade, int origem, ListaEstatica<Integer> destino) {
+        Random random = new Random();
         this.id = id;
         this.prioridade = prioridade;
+        this.contadorDeDestinos = 0;
         this.andarOrigem = origem;
-        this.andarDestino = destino;
+        this.destinos = destino;
+        this.andarDestino = destinos.getElemento(contadorDeDestinos);
+        this.andarAtual = origem;
+        this.dentroElevador = false;
+        do{this.tempoAndar = random.GeradorDeNumeroAleatorio(10);}while(tempoAndar < 5);
+    }
+
+    @Override
+    public void atualizar(int minutoSimulado) {
+        if(!dentroElevador && andarDestino == andarAtual) {
+            tempoAndar--;
+
+            if(tempoAndar == 0) {
+                contadorDeDestinos++;
+                if(contadorDeDestinos >= destinos.getTamanho()){
+                    return;
+                }
+                andarOrigem = andarAtual;
+                andarDestino = destinos.getElemento(contadorDeDestinos);
+            }
+        }
+
+
+
     }
 
     public int getId() {
@@ -42,5 +73,13 @@ public class Pessoa implements Serializable {
 
     public void sairElevador() {
         this.dentroElevador = false;
+    }
+
+    public int getTempoAndar(){
+        return this.tempoAndar;
+    }
+
+    public void setAndarAtual(int andarAtual) {
+        this.andarAtual = andarAtual;
     }
 }

@@ -49,6 +49,17 @@ public class FilaComum<T> implements Serializable {
 
     }
 
+    public boolean contem(T elemento){
+        NodeDuplo<T> atual = head;
+        while(atual != null){
+            if(atual.getElemento() == elemento){
+                return true;
+            }
+            atual = atual.getNext();
+        }
+        return false;
+    }
+
     public boolean isEmpty(){
         return head == null;
     }

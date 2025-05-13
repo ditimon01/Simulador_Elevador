@@ -7,6 +7,7 @@
         private final int numeroElevador;// id do elevador
         private int andarAtual;// andar onde o elevador está
         private int destino;// andar para onde o elevador irá (trocar para uma lista, para armazenar o destino de todas as pessoas dentro do elevador)
+        private ListaDinamica<Pessoa> pessoasSaida;
         private ListaDinamica<Integer> destinos;
         private ListaDinamica<Pessoa> pessoasDentro;// lista de pessoas dentro do elevador
         private static final int CAPACIDADE_MAXIMA = 10;// capacidade máxima de pessoas dentro do elevador
@@ -22,12 +23,13 @@
             this.numeroElevador = numero;
             this.andarAtual = 0;
             this.destino = 0;
+            this.pessoasSaida = new ListaDinamica<>();
             this.destinos = new ListaDinamica<>();
             this.pessoasDentro = new ListaDinamica<>();
             this.estado = EstadoElevador.PARADO;
         }
 
-
+        // adiciona 1 destino a lista de destinos
         public void addDestino(int destino){
             if(destino != andarAtual && !destinos.contem(destino)){
                 destinos.add(destino, destinos.tamanho());
@@ -35,6 +37,9 @@
             }
         }
 
+        // ordena a lista de destinos baseado na distância de cada destino
+        // considerar utilização de outro algoritmo de ordenação
+        // considerar alteração para cada heurísticas
         private void ordenarDestinos(){
             for(int i = 0; i < destinos.tamanho() - 1; i++){
                 for(int j = i + 1; j < destinos.tamanho(); j++){
@@ -98,7 +103,7 @@
                 estado = EstadoElevador.SUBINDO;
                 System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
                 andarAtual++;
-            }else if(andarAtual > destino){
+            }else{
                 estado = EstadoElevador.DESCENDO;
                 System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
                 andarAtual--;
@@ -113,6 +118,7 @@
                 Pessoa p = pessoasDentro.getElemento(i);
                 if(p != null && p.getAndarDestino() == andarAtual){ //compara o andar de destino de cada pessoa dentro do elevador
                     p.sairElevador();
+                    pessoasSaida.add(p, pessoasSaida.tamanho());
                     pessoasDentro.removePorPosicao(i);
                     System.out.println("Pessoa " + p.getId() + " desembarcou no andar " + andarAtual);
                     i--;
@@ -157,4 +163,8 @@
         public int getNumeroElevador() { return numeroElevador; }
 
         public ListaDinamica<Integer> getDestinos() { return destinos; }
+
+        public ListaDinamica<Pessoa> getPessoasSaida() {
+            return pessoasSaida;
+        }
     }

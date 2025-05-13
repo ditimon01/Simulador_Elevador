@@ -117,7 +117,20 @@ public class FilaPrioridade implements Serializable {
         return (T) head.getFila().getHead();
     }
 
-
+    public <T> boolean contemElemento(T elemento){
+        NodePrior temp = head;
+        while(temp != null){
+            NodeDuplo atual = temp.getFila().getHead();
+            while(atual != null){
+                if(atual.getElemento() == elemento){
+                    return true;
+                }
+                atual = atual.getNext();
+            }
+            temp = temp.getNext();
+        }
+        return false;
+    }
 
 
 

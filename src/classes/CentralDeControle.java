@@ -1,6 +1,7 @@
 package classes;
 
 import estruturas.ListaEstatica;
+import estruturas.Node;
 
 public class CentralDeControle extends Serializacao  {
     private ListaEstatica<Elevador> elevadores;
@@ -18,15 +19,32 @@ public class CentralDeControle extends Serializacao  {
     @Override
     public void atualizar(int minutosSimulados) {
 
-        for(int i = 0; i < predio.getAndares().getTamanho(); i++){
-            Andar andar = predio.getAndares().getElemento(i);
-            andar.verificaPessoas();
-        }
 
         for(int i = 0; i < elevadores.getTamanho(); i++){
             Elevador elevador = elevadores.getElemento(i);
-            elevador.atualizar(minutosSimulados);
+
             receberPessoas(elevador);
+            elevador.atualizar(minutosSimulados);
+
+            Node<Pessoa> atual = elevador.getPessoasSaida().getHead();
+
+            while(atual != null){
+                Pessoa p = atual.getElemento();
+                predio.getAndares().getElemento(elevador.getAndarAtual()).adicionarPessoaAndar(p);
+                elevador.getPessoasSaida().removePorElemento(p);
+                atual = elevador.getPessoasSaida().getHead();
+            }
+
+
+
+            Node<Pessoa> atual2 = elevador.getPessoasDentro().getHead();
+
+            while(atual2 != null){
+                Pessoa p = atual2.getElemento();
+                p.setAndarAtual(elevador.getAndarAtual());
+                atual2 = atual2.getNext();
+            }
+
         }
     }
 
@@ -47,7 +65,7 @@ public class CentralDeControle extends Serializacao  {
                 continue;
             }
 
-            if(!elevador.getDestinos().contem(andar.getNumero())){
+            if(!(elevador.getDestinos().contem(andar.getNumero()))){
                 elevador.addDestino(andar.getNumero());
             }
         }
@@ -63,7 +81,7 @@ public class CentralDeControle extends Serializacao  {
             elevador.adicionarPessoa(p);
         }
 
-        andar. verificaPessoas();
+        andar.verificaPessoas();
 
         if(!andar.temChamada()){
             elevador.removeDestino(andar.getNumero());

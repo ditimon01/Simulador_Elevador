@@ -80,7 +80,7 @@ public class ListaDinamica<T> implements Serializable {
             return;
         }
 
-        if(head != null && head.getElemento().equals(elemento)){
+        if(head.getElemento().equals(elemento)){
             head = head.getNext();
         }
 

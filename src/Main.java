@@ -1,8 +1,5 @@
 
-
 import classes.Simulador;
-import estruturas.FilaPrioridade;
-import estruturas.ListaDinamica;
 
 import java.io.File;
 
