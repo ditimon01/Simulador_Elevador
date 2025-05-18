@@ -42,9 +42,6 @@ public class Pessoa extends Serializacao {
                 andarDestino = destinos.getElemento(contadorDeDestinos);
             }
         }
-
-
-
     }
 
     public int getId() {

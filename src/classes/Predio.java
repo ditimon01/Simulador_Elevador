@@ -24,7 +24,7 @@ public class Predio extends Serializacao {
 
     @Override
     public void atualizar(int minutosSimulados ) {
-        if (minutosSimulados % 5 == 0) { // A cada 5 minutos, chega uma pessoa
+        if (minutosSimulados % 2 == 0) { // A cada 5 minutos, chega uma pessoa
             int andarOrigem = 0;
             ListaEstatica<Integer> destinos;
             do{

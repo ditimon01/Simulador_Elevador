@@ -24,7 +24,7 @@ public class Andar implements Serializable {
     public void adicionarPessoaFila(Pessoa x) {
         if(fila.contemElemento(x)) return;
         fila.addElemento(x.getPrioridade(), x);
-        System.out.println("Pessoa " + x.getId() + " adicionada no andar " + numero);
+        System.out.println("Pessoa " + x.getId() + " adicionada na fila do andar " + numero);
 
         if(x.getAndarDestino() > numero) {painel.pressionarSubir();}
         else {painel.pressionarDescer();}
@@ -56,7 +56,6 @@ public class Andar implements Serializable {
         NodeDuplo<Pessoa> atual = fila.getPrimeiroElemento();
         while(atual != null){
 
-            System.out.println(atual.getElemento().getAndarDestino());
             if(atual.getElemento().getAndarDestino() > numero){
                 subir = true;
             }

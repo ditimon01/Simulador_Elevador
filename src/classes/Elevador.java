@@ -63,11 +63,6 @@
 
             this.destino = destinos.getElemento(0);
 
-            System.out.print("Destinos atuais: ");
-            for (int i = 0; i < destinos.tamanho(); i++) {
-                System.out.print(destinos.getElemento(i) + " ");
-            }
-            System.out.println();
         }
 
         public void removeDestino(int destino){

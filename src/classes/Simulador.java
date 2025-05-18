@@ -57,6 +57,8 @@ public class Simulador implements Serializable {
           temporizador.scheduleAtFixedRate(new TimerTask() {
               public void run() {
                   if(minutosSimulados < duracaoSimulacao) {
+                      System.out.println("---------------------------------------------------------");
+                      System.out.println("Minutos simulados: " + minutosSimulados);
                       predio.atualizar(minutosSimulados++);
                   }else{
                       encerrar();
