@@ -13,10 +13,10 @@ public class Simulador implements Serializable {
     private Predio predio;
     private final int duracaoSimulacao;
 
-    public Simulador(int duracaoSimulacao, int velocidadeMs, int andares, int elevadores) {
+    public Simulador(int duracaoSimulacao, int velocidadeMs, int andares, int elevadores, CentralDeControle.EstadoCentralDeControle estado) {
         this.minutosSimulados = 0;
         this.velocidadeMs = velocidadeMs;
-        this.predio = new Predio(andares, elevadores);
+        this.predio = new Predio(andares, elevadores, estado);
         this.duracaoSimulacao = duracaoSimulacao;
     }
 
@@ -24,7 +24,8 @@ public class Simulador implements Serializable {
         if(emExecucao) return;
         emExecucao = true;
         iniciarTemporizador();
-        System.out.println("Simulação iniciada.");
+        System.out.println("---------------------------------------------------------");
+        System.out.println("                 SIMULAÇÃO INICIADA");
     }
 
 
@@ -32,7 +33,8 @@ public class Simulador implements Serializable {
         if(temporizador !=null ) {
             temporizador.cancel();
             emExecucao = false;
-            System.out.println("Simulação pausada.");
+            System.out.println("---------------------------------------------------------");
+            System.out.println("                 SIMULAÇÃO PAUSADA");
         }
     }
 
@@ -40,7 +42,8 @@ public class Simulador implements Serializable {
         if(!emExecucao){
              iniciarTemporizador();
              emExecucao = true;
-             System.out.println("Simulação retomada.");
+            System.out.println("---------------------------------------------------------");
+             System.out.println("                 SIMULAÇÃO RETOMADA");
         }
     }
 
@@ -49,7 +52,8 @@ public class Simulador implements Serializable {
         if(temporizador != null)
             temporizador.cancel();
             emExecucao = false;
-            System.out.println("Simulação encerrada");
+            System.out.println("---------------------------------------------------------");
+            System.out.println("                 SIMULAÇÃO ENCERRADA");
     }
 
     public void iniciarTemporizador(){
@@ -62,6 +66,9 @@ public class Simulador implements Serializable {
                       predio.atualizar(minutosSimulados++);
                   }else{
                       encerrar();
+                      System.out.println("---------------------------------------------------------");
+                      System.out.println("Energia Gasta: " + predio.getCentralDeControle().getEnergiaGasta() * 2 + "W");
+
                   }
               }
           }, 0, velocidadeMs);
@@ -73,6 +80,7 @@ public class Simulador implements Serializable {
 
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             out.writeObject(this);
+            System.out.println("---------------------------------------------------------");
             System.out.println("Simulação gravada com sucesso em : " + nomeArquivo);
         }catch (IOException e){
             e.printStackTrace();

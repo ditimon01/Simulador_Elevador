@@ -12,13 +12,13 @@ public class Predio extends Serializacao {
     private final Random randomizacao;
 
 
-    public Predio(int numeroAndares, int numeroElevadores){
+    public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado){
         this.andares = new ListaEstatica<>(numeroAndares);
         this.randomizacao = new Random();
         for (int i = 0; i < numeroAndares; i++){
             andares.add(new Andar(i),i);
         }
-        this.centralDeControle = new CentralDeControle(numeroElevadores, this);
+        this.centralDeControle = new CentralDeControle(numeroElevadores, this, estado);
 
     }
 
@@ -71,5 +71,7 @@ public class Predio extends Serializacao {
 
     public ListaEstatica<Andar> getAndares() { return andares;}
 
-
+    public CentralDeControle getCentralDeControle() {
+        return centralDeControle;
+    }
 }

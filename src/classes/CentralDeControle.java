@@ -6,14 +6,22 @@ import estruturas.Node;
 public class CentralDeControle extends Serializacao {
     private ListaEstatica<Elevador> elevadores;
     private Predio predio;
+    private EstadoCentralDeControle estado;
+    private int energiaGasta;
 
+    public enum EstadoCentralDeControle{
+        Economia,
+        Felicidade;
+    }
 
-    public CentralDeControle(int numeroElevadores, Predio predio) {
+    public CentralDeControle(int numeroElevadores, Predio predio, EstadoCentralDeControle estado ) {
         this.elevadores = new ListaEstatica<Elevador>(numeroElevadores);
         this.predio = predio;
         for (int i = 0; i < numeroElevadores; i++) {
             elevadores.add(new Elevador(i), i);
         }
+        this.energiaGasta = 0;
+        this.estado = estado;
     }
 
     @Override
@@ -22,12 +30,17 @@ public class CentralDeControle extends Serializacao {
 
         for (int i = 0; i < elevadores.getTamanho(); i++) {
             Elevador elevador = elevadores.getElemento(i);
-
+            int andar_anterior = elevador.getAndarAtual();
+            Elevador.EstadoElevador estado_anterior = elevador.getEstado();
 
             verificaChamadas();
             receberPessoas(elevador);
             elevador.atualizar(minutosSimulados);
             receberPessoas(elevador);
+
+            if(andar_anterior != elevador.getAndarAtual()){ energiaGasta++;}
+            if(estado_anterior != elevador.getEstado()){ energiaGasta++;}
+
 
             Node<Pessoa> atual = elevador.getPessoasSaida().getHead();
 
@@ -94,7 +107,6 @@ public class CentralDeControle extends Serializacao {
                         if (dist < distancia) {
                             distancia = dist;
                             elevadorEnviado = elevadorAtual;
-
                         }
                     } else if(elevadorAtual.getEstado() == Elevador.EstadoElevador.SUBINDO && elevadorAtual.getAndarAtual() <= andarAtual.getNumero()){
                         if (dist <= distancia) {
@@ -119,4 +131,7 @@ public class CentralDeControle extends Serializacao {
 
     public ListaEstatica<Elevador> getElevadores() { return elevadores; }
 
+    public int getEnergiaGasta() {
+        return energiaGasta;
+    }
 }
