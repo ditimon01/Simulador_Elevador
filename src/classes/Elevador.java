@@ -119,7 +119,6 @@
                     i--;
                 }
             }
-
             removeDestino(andarAtual);
         }
 

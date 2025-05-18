@@ -26,8 +26,7 @@ public class Andar implements Serializable {
         fila.addElemento(x.getPrioridade(), x);
         System.out.println("Pessoa " + x.getId() + " adicionada na fila do andar " + numero);
 
-        if(x.getAndarDestino() > numero) {painel.pressionarSubir();}
-        else {painel.pressionarDescer();}
+        painel.pressionar();
     }
 
 
@@ -48,30 +47,17 @@ public class Andar implements Serializable {
 
     public void verificaPessoas(){
 
-        this.painel.reset();
-
-        boolean subir = false;
-        boolean descer = false;
-
-        NodeDuplo<Pessoa> atual = fila.getPrimeiroElemento();
-        while(atual != null){
-
-            if(atual.getElemento().getAndarDestino() > numero){
-                subir = true;
-            }
-            else if(atual.getElemento().getAndarDestino() < numero){
-                descer = true;
-            }
-            if(subir && descer) break;
-            atual = atual.getNext();
+        if(fila.isEmpty()) {
+            painel.reset();
+        }else{
+            painel.pressionar();
         }
-        if(subir) painel.pressionarSubir();
-        if(descer) painel.pressionarDescer();
+
     }
 
 
     public boolean temChamada(){
-        return painel.SubirEstaAtivado() || painel.DescerEstaAtivado();
+        return painel.getBotao();
     }
 
     public boolean isEmpty() {
@@ -88,5 +74,9 @@ public class Andar implements Serializable {
 
     public ListaDinamica<Pessoa> getPessoas() {
         return pessoas;
+    }
+
+    public FilaPrioridade getFila() {
+        return fila;
     }
 }

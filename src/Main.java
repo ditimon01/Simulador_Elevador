@@ -8,9 +8,9 @@ public class Main {
     public static void main(String[] args) {
 
 
-        int DURACAO_SIMULACAO = 60;
+        int DURACAO_SIMULACAO = 20;
         int VELOCIDADE_SIMULACAO_MS = 10;
-        int QUANTIDADE_ANDARES = 5;
+        int QUANTIDADE_ANDARES = 50;
         int QUANTIDADE_ELEVADORES = 2;
         CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Economia;
 

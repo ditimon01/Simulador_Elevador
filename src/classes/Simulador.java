@@ -49,11 +49,19 @@ public class Simulador implements Serializable {
 
     //verificar se é o mesmo que pausar
     public void encerrar(){
-        if(temporizador != null)
+        if(temporizador != null){
             temporizador.cancel();
-            emExecucao = false;
-            System.out.println("---------------------------------------------------------");
-            System.out.println("                 SIMULAÇÃO ENCERRADA");
+        }
+        emExecucao = false;
+        System.out.println("---------------------------------------------------------");
+        System.out.println("                 SIMULAÇÃO ENCERRADA");
+        System.out.println("---------------------------------------------------------");
+        System.out.println("Energia Gasta: " + predio.getCentralDeControle().getEnergiaGasta() * 2 + "W");
+        float tempoMedio = (float) predio.getCentralDeControle().getTempoEsperaTotal() / predio.getNumeroDePessoas();
+        System.out.println("Tempo Médio de Espera: " + tempoMedio);
+        System.out.println("Menor Tempo de Espera: " + predio.getCentralDeControle().getMenorTempoEspera());
+        System.out.println("Maior Tempo de Espera: " + predio.getCentralDeControle().getMaiorTempoEspera());
+
     }
 
     public void iniciarTemporizador(){
@@ -66,9 +74,6 @@ public class Simulador implements Serializable {
                       predio.atualizar(minutosSimulados++);
                   }else{
                       encerrar();
-                      System.out.println("---------------------------------------------------------");
-                      System.out.println("Energia Gasta: " + predio.getCentralDeControle().getEnergiaGasta() * 2 + "W");
-
                   }
               }
           }, 0, velocidadeMs);

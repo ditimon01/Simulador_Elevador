@@ -11,7 +11,17 @@ public class FilaPrioridade implements Serializable {
     }
 
     public boolean isEmpty(){
-        return head == null;
+        if(head == null){return true;}
+
+        NodePrior temp = head;
+
+        while(temp != null){
+            if(!temp.getFila().isEmpty()){
+                return false;
+            }
+            temp = temp.getNext();
+        }
+        return true;
     }
 
     public boolean addPrioridade(int prioridade){
@@ -132,6 +142,7 @@ public class FilaPrioridade implements Serializable {
         return false;
     }
 
-
-
+    public NodePrior getHead() {
+        return head;
+    }
 }

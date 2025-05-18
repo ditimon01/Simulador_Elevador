@@ -14,6 +14,7 @@ public class Pessoa extends Serializacao {
     private int andarAtual;
     private boolean dentroElevador;
     private int tempoAndar;
+    private int tempoEspera;
 
     public Pessoa(int id, int prioridade, int origem, ListaEstatica<Integer> destino) {
         Random random = new Random();
@@ -26,10 +27,12 @@ public class Pessoa extends Serializacao {
         this.andarAtual = origem;
         this.dentroElevador = false;
         do{this.tempoAndar = random.GeradorDeNumeroAleatorio(10);}while(tempoAndar < 5);
+        this.tempoEspera = 0;
     }
 
     @Override
     public void atualizar(int minutoSimulado) {
+
         if(!dentroElevador && andarDestino == andarAtual) {
             tempoAndar--;
 
@@ -42,6 +45,10 @@ public class Pessoa extends Serializacao {
                 andarDestino = destinos.getElemento(contadorDeDestinos);
             }
         }
+    }
+
+    public void addTempoEspera(){
+        this.tempoEspera++;
     }
 
     public int getId() {
@@ -65,6 +72,7 @@ public class Pessoa extends Serializacao {
     }
 
     public void entrarElevador() {
+        tempoEspera = 0;
         this.dentroElevador = true;
     }
 
@@ -74,6 +82,10 @@ public class Pessoa extends Serializacao {
 
     public int getTempoAndar(){
         return this.tempoAndar;
+    }
+
+    public int getTempoEspera() {
+        return tempoEspera;
     }
 
     public void setAndarAtual(int andarAtual) {

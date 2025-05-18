@@ -3,33 +3,22 @@ package classes;
 import java.io.Serializable;
 
 public class Painel implements Serializable {
-    private boolean SubirAtivado;
-    private boolean DescerAtivado;
+    private boolean botao;
 
     public Painel() {
-        this.SubirAtivado = false;
-        this.DescerAtivado = false;
+        this.botao = false;
     }
 
-    public void pressionarSubir() {
-        SubirAtivado = true;
-    }
-
-    public void pressionarDescer() {
-        DescerAtivado = true;
+    public void pressionar() {
+        botao = true;
     }
 
     public void reset() {
-        this.SubirAtivado = false;
-        this.DescerAtivado = false;
+        this.botao = false;
     }
 
-    public boolean SubirEstaAtivado() {
-        return SubirAtivado;
-    }
-
-    public boolean DescerEstaAtivado() {
-        return DescerAtivado;
+    public boolean getBotao() {
+        return botao;
     }
 }
 
