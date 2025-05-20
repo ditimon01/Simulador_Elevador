@@ -8,11 +8,11 @@ public class Main {
     public static void main(String[] args) {
 
 
-        int DURACAO_SIMULACAO = 20;
-        int VELOCIDADE_SIMULACAO_MS = 10;
-        int QUANTIDADE_ANDARES = 50;
-        int QUANTIDADE_ELEVADORES = 2;
-        CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Economia;
+        int DURACAO_SIMULACAO = 3600;
+        int VELOCIDADE_SIMULACAO_MS = 1;
+        int QUANTIDADE_ANDARES = 15;
+        int QUANTIDADE_ELEVADORES = 5;
+        CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Felicidade;
 
         Simulador simulador = new Simulador(DURACAO_SIMULACAO,VELOCIDADE_SIMULACAO_MS,QUANTIDADE_ANDARES,QUANTIDADE_ELEVADORES,estado);
 

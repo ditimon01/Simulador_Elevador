@@ -31,7 +31,7 @@ public class Pessoa extends Serializacao {
     }
 
     @Override
-    public void atualizar(int minutoSimulado) {
+    public void atualizar(int segundosSimulados) {
 
         if(!dentroElevador && andarDestino == andarAtual) {
             tempoAndar--;
@@ -47,8 +47,8 @@ public class Pessoa extends Serializacao {
         }
     }
 
-    public void addTempoEspera(){
-        this.tempoEspera++;
+    public void addTempoEspera(int segundos){
+        this.tempoEspera += segundos;
     }
 
     public int getId() {

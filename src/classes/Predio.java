@@ -22,12 +22,12 @@ public class Predio extends Serializacao {
     }
 
     @Override
-    public void atualizar(int minutosSimulados ) {
-        if (minutosSimulados % 2 == 0) { // A cada 5 minutos, chega uma pessoa
+    public void atualizar(int segundosSimulados ) {
+        if (segundosSimulados % 60 == 0) {
             int andarOrigem = 0;
             ListaEstatica<Integer> destinos;
             do{
-                destinos = new ListaEstatica<>(randomizacao.GeradorDeNumeroAleatorio(andares.getTamanho()+1));
+                destinos = new ListaEstatica<>(randomizacao.GeradorDeNumeroAleatorio(5));
             }while(destinos.getTamanho() <= 1);
 
 
@@ -38,12 +38,11 @@ public class Predio extends Serializacao {
                 }else i--;
 
 
-
             }
 
             destinos.add(0, destinos.getTamanho()-1);
 
-            Pessoa p = new Pessoa(minutosSimulados, randomizacao.GeradorDeNumeroAleatorio(3) , andarOrigem, destinos);
+            Pessoa p = new Pessoa(segundosSimulados/60, randomizacao.GeradorDeNumeroAleatorio(3) , andarOrigem, destinos);
             NumeroDePessoas++;
             andares.getElemento(andarOrigem).adicionarPessoaFila(p);
         }
@@ -54,7 +53,7 @@ public class Predio extends Serializacao {
             Node<Pessoa> atual = andar.getPessoas().getHead();
             while(atual != null){
                 Pessoa p = atual.getElemento();
-                p.atualizar(minutosSimulados);
+                p.atualizar(segundosSimulados);
 
                 if(p.getTempoAndar() == 0 && !p.estaDentroDoElevador()){
                     andar.adicionarPessoaFila(p);
@@ -72,7 +71,7 @@ public class Predio extends Serializacao {
                 while(atual2 != null){
                     Pessoa p = atual2.getElemento();
                     if(p != null){
-                        p.addTempoEspera();
+                        p.addTempoEspera(20);
                     }
                     atual2 = atual2.getNext();
                 }
@@ -83,7 +82,7 @@ public class Predio extends Serializacao {
             andar.verificaPessoas();
         }
 
-        centralDeControle.atualizar(minutosSimulados);
+        centralDeControle.atualizar(segundosSimulados);
     }
 
 

@@ -78,17 +78,17 @@
 
         // método para atualizar o elevador a cada minuto simulado
         @Override
-        public void atualizar(int minutosSimulados){
+        public void atualizar(int segundosSimulados){
 
             if(destinos.tamanho() == 0){
                 estado = EstadoElevador.PARADO;
-                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
+                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " - Estado: " + estado);
                 return;
             }
 
             if(andarAtual == destino){
                 estado = EstadoElevador.PARADO;
-                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
+                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " - Estado: " + estado);
                 desembarquePessoas();
                 atualizarDestino();
                 return;
@@ -96,11 +96,11 @@
 
             if(andarAtual < destino){
                 estado = EstadoElevador.SUBINDO;
-                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
+                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " - Estado: " + estado);
                 andarAtual++;
             }else{
                 estado = EstadoElevador.DESCENDO;
-                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " no minuto " + minutosSimulados + " - Estado: " + estado);
+                System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " - Estado: " + estado);
                 andarAtual--;
             }
 
