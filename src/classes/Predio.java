@@ -9,9 +9,11 @@ public class Predio extends Serializacao {
     private final CentralDeControle centralDeControle;
     private final Random randomizacao;
     private int NumeroDePessoas;
+    private int tempoMovimentoElevador;
+    boolean horarioPico;
 
 
-    public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado){
+    public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico){
         this.andares = new ListaEstatica<>(numeroAndares);
         this.randomizacao = new Random();
         for (int i = 0; i < numeroAndares; i++){
@@ -19,32 +21,47 @@ public class Predio extends Serializacao {
         }
         this.centralDeControle = new CentralDeControle(numeroElevadores, this, estado);
         this.NumeroDePessoas = 0;
+        this.tempoMovimentoElevador = tempoMovimentoElevador;
+        this.horarioPico = horarioPico;
     }
 
     @Override
     public void atualizar(int segundosSimulados ) {
-        if (segundosSimulados % 60 == 0) {
+
+        if (segundosSimulados % (3 * tempoMovimentoElevador) == 0) {
             int andarOrigem = 0;
             ListaEstatica<Integer> destinos;
-            do{
-                destinos = new ListaEstatica<>(randomizacao.GeradorDeNumeroAleatorio(5));
-            }while(destinos.getTamanho() <= 1);
 
-
-            for (int i = 0; i < andares.getTamanho()-1; i++) {
-                int num = randomizacao.GeradorDeNumeroAleatorio(andares.getTamanho());
-                if(num != 0) {
-                    destinos.add(num, i);
-                }else i--;
-
-
+            int cont = 1;
+            if(horarioPico){
+                cont++;
             }
 
-            destinos.add(0, destinos.getTamanho()-1);
+            for(int e = 0; e < cont; e++) {
+                do {
+                    destinos = new ListaEstatica<>(randomizacao.GeradorDeNumeroAleatorio(5));
+                } while (destinos.getTamanho() <= 1);
 
-            Pessoa p = new Pessoa(segundosSimulados/60, randomizacao.GeradorDeNumeroAleatorio(3) , andarOrigem, destinos);
-            NumeroDePessoas++;
-            andares.getElemento(andarOrigem).adicionarPessoaFila(p);
+
+                for (int i = 0; i < andares.getTamanho() - 1; i++) {
+                    int num = randomizacao.GeradorDeNumeroAleatorio(andares.getTamanho());
+                    if (num != 0) {
+                        destinos.add(num, i);
+                    } else i--;
+                }
+
+                destinos.add(0, destinos.getTamanho() - 1);
+
+                int id ;
+                if(horarioPico){
+                    id = ((segundosSimulados / (3 * tempoMovimentoElevador)) * 2) + e;
+                }else{
+                    id = segundosSimulados / (3 * tempoMovimentoElevador);
+                }
+                Pessoa p = new Pessoa(id, randomizacao.GeradorDeNumeroAleatorio(3), andarOrigem, destinos);
+                NumeroDePessoas++;
+                andares.getElemento(andarOrigem).adicionarPessoaFila(p);
+            }
         }
 
 

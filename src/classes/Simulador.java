@@ -14,12 +14,14 @@ public class Simulador implements Serializable {
     private boolean emExecucao;
     private Predio predio;
     private final int duracaoSimulacao;
+    private int tempoMovimentoElevador;
 
-    public Simulador(int duracaoSimulacao, int velocidadeMs, int andares, int elevadores, CentralDeControle.EstadoCentralDeControle estado) {
+    public Simulador(int duracaoSimulacao, int velocidadeMs, int andares, int elevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico) {
         this.segundosSimulados = 0;
         this.velocidadeMs = velocidadeMs;
-        this.predio = new Predio(andares, elevadores, estado);
+        this.predio = new Predio(andares, elevadores, estado, tempoMovimentoElevador, horarioPico);
         this.duracaoSimulacao = duracaoSimulacao;
+        this.tempoMovimentoElevador = tempoMovimentoElevador;
     }
 
     public void iniciar(){
@@ -84,7 +86,7 @@ public class Simulador implements Serializable {
           temporizador.scheduleAtFixedRate(new TimerTask() {
               public void run() {
                   if(segundosSimulados < duracaoSimulacao) {
-                      if(segundosSimulados%20 == 0){
+                      if(segundosSimulados%tempoMovimentoElevador == 0){
                           System.out.println("---------------------------------------------------------");
                           if(segundosSimulados%60 == 0){
                               System.out.println("Tempo de Simulação: " + segundosSimulados/3600 + ":" + (segundosSimulados%3600)/60 + ":00");
