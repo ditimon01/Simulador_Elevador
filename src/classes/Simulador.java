@@ -3,6 +3,7 @@ package classes;
 import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -105,23 +106,50 @@ public class Simulador implements Serializable {
 
 
     public void gravar(String nomeArquivo) {
-        File arquivo = new File("saves", nomeArquivo);
+        System.out.println("iniciando gravação");
+
+        File arquivo = new File("saves", nomeArquivo + ".dat");
 
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
-            out.writeObject(this);
             System.out.println("---------------------------------------------------------");
             System.out.println("Simulação gravada com sucesso em : " + nomeArquivo);
+            out.writeObject(this);
         }catch (IOException e){
+            System.out.println("Erro ao gravar simulação: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     public static Simulador carregar(String nomeArquivo) {
-        File arquivo = new File("saves", nomeArquivo);
+        File arquivo = new File("saves", nomeArquivo + ".dat");
 
+        System.out.println("---------------------------------------------------------");
+        System.out.println("                  CARREGAMENTO INICIADO...");
+        System.out.println("---------------------------------------------------------");
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo))) {
             Simulador sim = (Simulador) in.readObject();
-            sim.continuar();
+
+            int energiaGasta = sim.predio.getCentralDeControle().getEnergiaGasta();
+            int maiorTempo = sim.predio.getCentralDeControle().getMaiorTempoEspera();
+            float tempoMedio = (float) sim.predio.getCentralDeControle().getTempoEsperaTotal() / sim.predio.getNumeroDePessoas();
+            int tempoMedioTemp = (int) tempoMedio;
+            float energiaPorChamada =  sim.predio.getCentralDeControle().getEnergiaGasta() / (float) sim.predio.getCentralDeControle().getChamadasAtendidas();
+            int chamadasAtendidas = sim.predio.getCentralDeControle().getChamadasAtendidas();
+
+            System.out.println("---------------------------------------------------------");
+            System.out.println("                 SIMULAÇÃO CARREGADA");
+            System.out.println("---------------------------------------------------------");
+            System.out.println("Nome da Simulação: " + nomeArquivo);
+            if(energiaGasta < 1000){
+                System.out.println("Energia Gasta: " + energiaGasta + "W");
+            }else{
+                System.out.printf("Energia Gasta: %.2fkW %n", energiaGasta / 1000.0);
+            }
+            System.out.printf("Energia por Chamada: %.2fW %n",energiaPorChamada);
+            System.out.printf("Tempo Médio de Espera: %d minutos e %.2f segundos %n" , tempoMedioTemp/60, (tempoMedio - ((tempoMedioTemp/60)*60)));
+            System.out.println("Maior Tempo de Espera: " + maiorTempo/60 + " minutos e " + maiorTempo%60 + " segundos");
+            System.out.println("Número de Chamadas Atendidas: " + chamadasAtendidas);
+            System.out.println("---------------------------------------------------------");
             return sim;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -129,15 +157,8 @@ public class Simulador implements Serializable {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
+    public boolean estaExecutando() {
+        return emExecucao;
+    }
 
 }
