@@ -1,6 +1,5 @@
 package classes;
 
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
 import java.sql.SQLOutput;
@@ -18,10 +17,10 @@ public class Simulador implements Serializable {
     private int tempoMovimentoElevador;
 
 
-    public Simulador(CentralDeControle.EstadoCentralDeControle estado, int duracaoSimulacao, int velocidadeMs, int andares, int elevadores, int tempoMovimentoElevador, int energiaDeslocamento, int energiaParada, boolean horarioPico, boolean andaresAleatorios) {
+    public Simulador(CentralDeControle.EstadoCentralDeControle estado, int duracaoSimulacao, int velocidadeMs, int andares, int elevadores, int capacidadeElevador, int tempoMovimentoElevador, int energiaDeslocamento, int energiaParada, boolean horarioPico, boolean andaresAleatorios) {
         this.segundosSimulados = 0;
         this.velocidadeMs = velocidadeMs;
-        this.predio = new Predio(andares, elevadores, estado, tempoMovimentoElevador, horarioPico, andaresAleatorios, energiaDeslocamento, energiaParada);
+        this.predio = new Predio(andares, elevadores, capacidadeElevador, estado, tempoMovimentoElevador, horarioPico, andaresAleatorios, energiaDeslocamento, energiaParada);
         this.duracaoSimulacao = duracaoSimulacao;
         this.tempoMovimentoElevador = tempoMovimentoElevador;
     }

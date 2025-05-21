@@ -2,25 +2,30 @@
 import classes.CentralDeControle;
 import classes.Simulador;
 
-import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
 
+        /* possíveis melhorias:
+         - tempo de aparecimento de pessoas como parâmetro
+         - considerar tempo de entrada e saída das pessoas nos elevadores
+         - melhorar visualização do simulador
+        */
 
         CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Felicidade; // Normal, Economia, Felicidade
-        int DURACAO_SIMULACAO = 7200; // em segundos
-        int VELOCIDADE_SIMULACAO_MS = 1; // quanto maior o valor inserido, mais lento a simulação roda, a simulação não aceita uma entrada menor que 1
-        int QUANTIDADE_ANDARES = 5; // quantidade de andares da simulação, a simulação não aceita uma quantia menor que 5
-        int QUANTIDADE_ELEVADORES = 1; // quantidade de elevadores da simulação, a simulação não aceita uma quantia menor que 1
-        int tempoMovimentacaoElevador = 1; // quantidade de tempo em segundos que o elevador leva de um andar a outro
+        int DURACAO_SIMULACAO = 1800; // em segundos
+        int VELOCIDADE_SIMULACAO_MS = 50; // quanto maior o valor inserido, mais lento a simulação roda, a simulação não aceita uma entrada menor que 1
+        int QUANTIDADE_ANDARES = 10; // quantidade de andares da simulação, a simulação não aceita uma quantia menor que 5
+        int QUANTIDADE_ELEVADORES = 3; // quantidade de elevadores da simulação, a simulação não aceita uma quantia menor que 1
+        int capacidadeElevador = 10; // quantidade de pessoas dentro do elevador, a simulação não aceita uma entrada menor que 5
+        int tempoMovimentacaoElevador = 10; // quantidade de tempo em segundos que o elevador leva de um andar a outro
         int energiaDeslocamento = 2; // energia gasta a cada deslocamento de elevador, a simulação não aceita uma entrada menor que 0
         int energiaParada = 1; // energia gasta a cada parada de elevador, a s simulação não aceita uma entrada menor que 0
-        boolean horarioPico = true; // caso seja true: quantidade de pessoas geradas é dobrada
-        boolean andaresAleatorios = true; // caso seja true: as pessoas são geradas em andares aleatórios
+        boolean horarioPico = false; // caso seja true: quantidade de pessoas geradas é dobrada
+        boolean andaresAleatorios = false; // caso seja true: as pessoas são geradas em andares aleatórios
 
 
-        Simulador simulador = new Simulador(estado, DURACAO_SIMULACAO, VELOCIDADE_SIMULACAO_MS, QUANTIDADE_ANDARES, QUANTIDADE_ELEVADORES, tempoMovimentacaoElevador, energiaDeslocamento, energiaParada, horarioPico, andaresAleatorios);
+        Simulador simulador = new Simulador(estado, DURACAO_SIMULACAO, VELOCIDADE_SIMULACAO_MS, QUANTIDADE_ANDARES, QUANTIDADE_ELEVADORES, capacidadeElevador, tempoMovimentacaoElevador, energiaDeslocamento, energiaParada, horarioPico, andaresAleatorios);
 
         simulador.iniciar();
 

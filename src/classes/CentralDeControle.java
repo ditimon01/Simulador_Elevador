@@ -5,7 +5,7 @@ import estruturas.Node;
 
 public class CentralDeControle extends Serializacao {
     private ListaEstatica<Elevador> elevadores;
-    private Predio predio;
+    private transient Predio predio;
     private final EstadoCentralDeControle estado;
     private int energiaGasta;
     private int tempoEsperaTotal;
@@ -17,17 +17,17 @@ public class CentralDeControle extends Serializacao {
     public enum EstadoCentralDeControle{
         Economia,
         Felicidade,
-        Normal;
+        Normal
     }
 
-    public CentralDeControle(int numeroElevadores, Predio predio, EstadoCentralDeControle estado, int energiaDeslocamento, int energiaParada ) {
-        this.elevadores = new ListaEstatica<Elevador>(numeroElevadores);
+    public CentralDeControle(int numeroElevadores, int capacidadeElevador, Predio predio, EstadoCentralDeControle estado, int energiaDeslocamento, int energiaParada ) {
+        this.elevadores = new ListaEstatica<>(numeroElevadores);
         this.predio = predio;
         for (int i = 0; i < numeroElevadores; i++) {
-            elevadores.add(new Elevador(i), i);
+            elevadores.add(new Elevador(i, capacidadeElevador), i);
         }
-        this.energiaGasta = 0;
         this.estado = estado;
+        this.energiaGasta = 0;
         tempoEsperaTotal = 0;
         maiorTempoEspera = 0;
         chamadasAtendidas = 0;
@@ -93,7 +93,7 @@ public class CentralDeControle extends Serializacao {
         if (elevador.getEstado() == Elevador.EstadoElevador.PARADO) {
             Andar andar = predio.getAndares().getElemento(elevador.getAndarAtual());
             //enquanto houver espaço no elevador, remove a pessoa da fila de espera do andar, e adiciona ao elevador
-            while (elevador.getPessoasDentro().tamanho() < Elevador.getCapacidadeMaxima() && !andar.isEmpty()) {
+            while (elevador.getPessoasDentro().tamanho() < elevador.getCapacidadeMaxima() && !andar.isEmpty()) {
                 Pessoa p = andar.removerPessoa();
                 if (p == null) break;
                 tempoEsperaTotal += p.getTempoEspera();
@@ -108,7 +108,7 @@ public class CentralDeControle extends Serializacao {
             andar.verificaPessoas();
 
             //remoção do destino de parada para evitar loop
-            if (!andar.temChamada() || elevador.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()) {
+            if (!andar.temChamada() || elevador.getPessoasDentro().tamanho() == elevador.getCapacidadeMaxima()) {
                 elevador.removeDestino(andar.getNumero());
             }
         }
@@ -131,7 +131,7 @@ public class CentralDeControle extends Serializacao {
                 Elevador elevadorAtual;
                 for (int e = 0; e < elevadores.getTamanho(); e++) {
                     elevadorAtual = elevadores.getElemento(e);
-                    if(elevadorAtual.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()){
+                    if(elevadorAtual.getPessoasDentro().tamanho() == elevadorAtual.getCapacidadeMaxima()){
                         continue;
                     }
                     if(elevadorAtual.getAndarAtual() == andarAtual.getNumero()){
@@ -164,12 +164,12 @@ public class CentralDeControle extends Serializacao {
             andarAtual.verificaPessoas();
             if (andarAtual.temChamada()) {
                 Elevador elevadorAtual;
-                int energiaGastaAtual = 0;
+                int energiaGastaAtual;
                 for (int e = 0; e < elevadores.getTamanho(); e++) {
                     elevadorAtual = elevadores.getElemento(e);
                     energiaGastaAtual = (Math.abs(andarAtual.getNumero() - elevadorAtual.getAndarAtual())) * 2;
 
-                    if(elevadorAtual.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()){
+                    if(elevadorAtual.getPessoasDentro().tamanho() == elevadorAtual.getCapacidadeMaxima()){
                         continue;
                     }
 
@@ -246,7 +246,7 @@ public class CentralDeControle extends Serializacao {
                     elevadorAtual = elevadores.getElemento(e);
                     tempo = Math.abs(elevadorAtual.getAndarAtual() - andarAtual.getNumero());
 
-                    if(elevadorAtual.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()){
+                    if(elevadorAtual.getPessoasDentro().tamanho() == elevadorAtual.getCapacidadeMaxima()){
                         continue;
                     }
 

@@ -7,10 +7,10 @@
         private final int numeroElevador;// id do elevador
         private int andarAtual;// andar onde o elevador está
         private int destino;// andar para onde o elevador irá (trocar para uma lista, para armazenar o destino de todas as pessoas dentro do elevador)
-        private ListaDinamica<Pessoa> pessoasSaida;
-        private ListaDinamica<Integer> destinos;
-        private ListaDinamica<Pessoa> pessoasDentro;// lista de pessoas dentro do elevador
-        private static final int CAPACIDADE_MAXIMA = 10;// capacidade máxima de pessoas dentro do elevador
+        private final ListaDinamica<Pessoa> pessoasSaida;
+        private final ListaDinamica<Integer> destinos;
+        private final ListaDinamica<Pessoa> pessoasDentro;// lista de pessoas dentro do elevador
+        private final int CAPACIDADE_MAXIMA;// capacidade máxima de pessoas dentro do elevador
         private EstadoElevador estado;// estado atual do elevador, se está subindo, descendo ou parado
 
         //definir possíveis estados do elevador
@@ -19,8 +19,9 @@
         }
 
 
-        public Elevador(int numero) {
+        public Elevador(int numero, int capacidadeMaxima) {
             this.numeroElevador = numero;
+            this.CAPACIDADE_MAXIMA = capacidadeMaxima;
             this.andarAtual = 0;
             this.destino = 0;
             this.pessoasSaida = new ListaDinamica<>();
@@ -149,7 +150,7 @@
             return pessoasDentro;
         }
 
-        public static int getCapacidadeMaxima() {
+        public int getCapacidadeMaxima() {
             return CAPACIDADE_MAXIMA;
         }
 
