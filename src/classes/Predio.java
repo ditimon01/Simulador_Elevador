@@ -15,6 +15,9 @@ public class Predio extends Serializacao {
 
 
     public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico , boolean andaresAleatorios){
+        if(numeroAndares < 5)throw new IllegalArgumentException("Numero de andares deve ser maior ou igual a 5");
+        if(numeroElevadores < 1)throw new IllegalArgumentException("Numero de elevadores deve ser maior que 0");
+        if(tempoMovimentoElevador < 1)throw new IllegalArgumentException("Tempo de movimento de elevador deve ser maior que 0");
         this.andares = new ListaEstatica<>(numeroAndares);
         this.randomizacao = new Random();
         for (int i = 0; i < numeroAndares; i++){

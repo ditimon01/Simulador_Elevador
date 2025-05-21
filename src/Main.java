@@ -7,14 +7,14 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
 
-        int DURACAO_SIMULACAO = 7200;
-        int VELOCIDADE_SIMULACAO_MS = 1;
-        int QUANTIDADE_ANDARES = 50;
-        int QUANTIDADE_ELEVADORES = 10;
+        int DURACAO_SIMULACAO = 7200; // em segundos
+        int VELOCIDADE_SIMULACAO_MS = 1; // quanto maior o valor inserido, mais lento a simulação roda
+        int QUANTIDADE_ANDARES = 5;
+        int QUANTIDADE_ELEVADORES = 1;
         CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Felicidade;
-        int tempoMovimentacaoElevador = 20;
-        boolean horarioPico = true;
-        boolean andaresAleatorios = true;
+        int tempoMovimentacaoElevador = 20; // quantidade de tempo em segundos que o elevador leva de um andar a outro
+        boolean horarioPico = true; // caso seja true: quantidade de pessoas geradas é dobrada
+        boolean andaresAleatorios = true; // caso seja true: as pessoas são geradas em andares aleatórios
 
         Simulador simulador = new Simulador(DURACAO_SIMULACAO, VELOCIDADE_SIMULACAO_MS, QUANTIDADE_ANDARES, QUANTIDADE_ELEVADORES, estado, tempoMovimentacaoElevador, horarioPico, andaresAleatorios);
 
@@ -30,19 +30,8 @@ public class Main {
             }
         }
 
-        simulador.gravar("teste-Felicidade-5-horarioPico");
+        simulador.gravar("MinhaSimulação");
 
-//        Simulador.carregar("teste-Economia-1");
-//        Simulador.carregar("teste-Economia-2");
-//        Simulador.carregar("teste-Economia-3");
-//        System.out.println("============================================================");
-//        Simulador.carregar("teste-Felicidade-1");
-//        Simulador.carregar("teste-Felicidade-2");
-//        Simulador.carregar("teste-Felicidade-3");
-//        System.out.println("============================================================");
-//        Simulador.carregar("teste-Normal-1");
-//        Simulador.carregar("teste-Normal-2");
-//        Simulador.carregar("teste-Normal-3");
 
     }
 }
