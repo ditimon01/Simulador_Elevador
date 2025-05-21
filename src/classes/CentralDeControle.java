@@ -34,32 +34,36 @@ public class CentralDeControle extends Serializacao {
     @Override
     public void atualizar(int segundosSimulados) {
 
-
+        //percorre a lista de elevadores
         for (int i = 0; i < elevadores.getTamanho(); i++) {
             Elevador elevador = elevadores.getElemento(i);
             int andar_anterior = elevador.getAndarAtual();
             Elevador.EstadoElevador estado_anterior = elevador.getEstado();
 
-            // adiciona as pessoas quando o elevador já está no andar
-            receberPessoas(elevador);
+
             //escolha baseado na heurística escolhida
             if(estado == EstadoCentralDeControle.Economia){
                 verificaChamadasEconomia();
             }else if(estado == EstadoCentralDeControle.Felicidade){
                 verificaChamadasFelicidade();
             }else if(estado == EstadoCentralDeControle.Normal){
+                verificarChamadasNormal();
             }
 
             elevador.atualizar(segundosSimulados);
 
+            //adiciona as pessoas que vão desembarcar na lista PessoasSaida
+            elevador.desembarquePessoas();
+            // adiciona as pessoas quando o elevador já está no andar
+            receberPessoas(elevador);
 
+            //cálculos de energia total gasta e maior energia gasta
             if(andar_anterior != elevador.getAndarAtual()){ energiaGasta+=2;}
             if(estado_anterior != elevador.getEstado()){ energiaGasta++;}
 
 
             Node<Pessoa> atual = elevador.getPessoasSaida().getHead();
-
-
+            // retira as pessoas que vão sair do elevador da lista PessoasSaida
             while (atual != null) {
                 Pessoa p = atual.getElemento();
                 predio.getAndares().getElemento(elevador.getAndarAtual()).adicionarPessoaAndar(p);
@@ -69,7 +73,7 @@ public class CentralDeControle extends Serializacao {
 
 
             Node<Pessoa> atual2 = elevador.getPessoasDentro().getHead();
-
+            //atualiza o andarAtual de cada pessoa
             while (atual2 != null) {
                 Pessoa p = atual2.getElemento();
                 p.setAndarAtual(elevador.getAndarAtual());
@@ -83,34 +87,67 @@ public class CentralDeControle extends Serializacao {
     private void receberPessoas(Elevador elevador) {
 
         if (elevador.getEstado() == Elevador.EstadoElevador.PARADO) {
-            Andar andarAtual = predio.getAndares().getElemento(elevador.getAndarAtual());
-            addPessoas(elevador, andarAtual);
+            Andar andar = predio.getAndares().getElemento(elevador.getAndarAtual());
+            //enquanto houver espaço no elevador, remove a pessoa da fila de espera do andar, e adiciona ao elevador
+            while (elevador.getPessoasDentro().tamanho() < Elevador.getCapacidadeMaxima() && !andar.isEmpty()) {
+                Pessoa p = andar.removerPessoa();
+                if (p == null) break;
+                tempoEsperaTotal += p.getTempoEspera();
+                if(p.getTempoEspera() > maiorTempoEspera){
+                    maiorTempoEspera = p.getTempoEspera();
+                }
+
+                elevador.adicionarPessoa(p);
+                chamadasAtendidas++;
+            }
+
+            andar.verificaPessoas();
+
+            //remoção do destino de parada para evitar loop
+            if (!andar.temChamada() || elevador.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()) {
+                elevador.removeDestino(andar.getNumero());
+            }
         }
 
         elevador.atualizarDestino();
     }
 
+    public void verificarChamadasNormal(){
 
-    private void addPessoas(Elevador elevador, Andar andar) {
+        ListaEstatica<Andar> andares = predio.getAndares();
+        Elevador elevadorEnviado = null;
+        int QuantiaDestinos = Integer.MAX_VALUE;
 
-        while (elevador.getPessoasDentro().tamanho() < Elevador.getCapacidadeMaxima() && !andar.isEmpty()) {
-            Pessoa p = andar.removerPessoa();
-            if (p == null) break;
-            tempoEsperaTotal += p.getTempoEspera();
-            if(p.getTempoEspera() > maiorTempoEspera){
-                maiorTempoEspera = p.getTempoEspera();
+        //normal apenas manda para chamada do elevador mais desocupado (com menos chamadas)
+
+        for (int i = 0; i < andares.getTamanho(); i++) {
+            Andar andarAtual = andares.getElemento(i);
+            andarAtual.verificaPessoas();
+            if (andarAtual.temChamada()) {
+                Elevador elevadorAtual;
+                for (int e = 0; e < elevadores.getTamanho(); e++) {
+                    elevadorAtual = elevadores.getElemento(e);
+                    if(elevadorAtual.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()){
+                        continue;
+                    }
+                    if(elevadorAtual.getAndarAtual() == andarAtual.getNumero()){
+                        elevadorEnviado = null;
+                        break;
+                    }
+                    if(elevadorAtual.getDestinos().tamanho() < QuantiaDestinos){
+                        elevadorEnviado = elevadorAtual;
+                        QuantiaDestinos = elevadorAtual.getDestinos().tamanho();
+                    }
+                }
+
+                if(elevadorEnviado != null){
+                    elevadorEnviado.addDestino(andarAtual.getNumero());
+                    elevadorEnviado.atualizarDestino();
+                }
             }
-
-            elevador.adicionarPessoa(p);
-            chamadasAtendidas++;
-        }
-
-        andar.verificaPessoas();
-
-        if (!andar.temChamada() || elevador.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()) {
-            elevador.removeDestino(andar.getNumero());
         }
     }
+
 
 
     public void verificaChamadasEconomia() {
@@ -187,9 +224,10 @@ public class CentralDeControle extends Serializacao {
     }
 
 
+    //
     public void verificaChamadasFelicidade() {
         ListaEstatica<Andar> andares = predio.getAndares();
-        int distancia = andares.getTamanho() + 1;
+        int menorTempo = andares.getTamanho() + 1;
         Elevador elevadorEnviado = null;
 
         for (int i = 0; i < andares.getTamanho(); i++) {
@@ -198,11 +236,11 @@ public class CentralDeControle extends Serializacao {
             if (andarAtual.temChamada()) {
 
                 Elevador elevadorAtual;
-                int dist;
+                int tempo;
                 for (int e = 0; e < elevadores.getTamanho(); e++) {
 
                     elevadorAtual = elevadores.getElemento(e);
-                    dist = Math.abs(elevadorAtual.getAndarAtual() - andarAtual.getNumero());
+                    tempo = Math.abs(elevadorAtual.getAndarAtual() - andarAtual.getNumero());
 
                     if(elevadorAtual.getPessoasDentro().tamanho() == Elevador.getCapacidadeMaxima()){
                         continue;
@@ -213,19 +251,43 @@ public class CentralDeControle extends Serializacao {
                         break;
                     }
 
+                    Node<Integer> andarDestinoAtual = elevadorAtual.getDestinos().getHead();
+
+                    if(elevadorAtual.getEstado() == Elevador.EstadoElevador.PARADO){
+                        tempo++;
+                    }
+
+                    if(andarDestinoAtual != null && andarAtual.getNumero() > andarDestinoAtual.getElemento()){
+                        andarDestinoAtual = andarDestinoAtual.getNext();
+                        while(andarDestinoAtual != null){
+                            if(andarAtual.getNumero() > andarDestinoAtual.getElemento()){
+                                tempo++;
+                            }
+                            andarDestinoAtual = andarDestinoAtual.getNext();
+                        }
+                    }else if(andarDestinoAtual != null && andarAtual.getNumero() < andarDestinoAtual.getElemento()){
+                        andarDestinoAtual = andarDestinoAtual.getNext();
+                        while(andarDestinoAtual != null){
+                            if(andarAtual.getNumero() < andarDestinoAtual.getElemento()){
+                                tempo++;
+                            }
+                            andarDestinoAtual = andarDestinoAtual.getNext();
+                        }
+                    }
+
                     if (elevadorAtual.getEstado() == Elevador.EstadoElevador.PARADO) {
-                        if (dist < distancia) {
-                            distancia = dist;
+                        if (tempo < menorTempo) {
+                            menorTempo = tempo;
                             elevadorEnviado = elevadorAtual;
                         }
                     } else if(elevadorAtual.getEstado() == Elevador.EstadoElevador.SUBINDO && elevadorAtual.getAndarAtual() < andarAtual.getNumero()){
-                        if (dist <= distancia) {
-                            distancia = dist;
+                        if (tempo <= menorTempo) {
+                            menorTempo = tempo;
                             elevadorEnviado = elevadorAtual;
                         }
                     } else if (elevadorAtual.getEstado() == Elevador.EstadoElevador.DESCENDO && elevadorAtual.getAndarAtual() > andarAtual.getNumero()){
-                        if (dist <= distancia) {
-                            distancia = dist;
+                        if (tempo <= menorTempo) {
+                            menorTempo = tempo;
                             elevadorEnviado = elevadorAtual;
                         }
                     }

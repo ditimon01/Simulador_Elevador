@@ -2,7 +2,6 @@ package classes;
 
 import estruturas.FilaPrioridade;
 import estruturas.ListaDinamica;
-import estruturas.NodeDuplo;
 
 import java.io.Serializable;
 
@@ -21,6 +20,7 @@ public class Andar implements Serializable {
     }
 
 
+    //adiciona pessoa na fila de espera do elevador
     public void adicionarPessoaFila(Pessoa x) {
         if(fila.contemElemento(x)) return;
         fila.addElemento(x.getPrioridade(), x);
@@ -29,13 +29,14 @@ public class Andar implements Serializable {
         painel.pressionar();
     }
 
-
+    //adiciona a pessoa no andar, ao sair do elevador
     public void adicionarPessoaAndar(Pessoa x) {
         if(!pessoas.contem(x)) {
             pessoas.add(x, pessoas.tamanho());
         }
     }
 
+    //remove a pessoa da fila de espera
     public Pessoa removerPessoa() {
 
         if(!fila.isEmpty()) {
@@ -44,7 +45,7 @@ public class Andar implements Serializable {
         return null;
     }
 
-
+    //faz a verificação se há ou não pessoas na fila de espera, e configura o painel
     public void verificaPessoas(){
 
         if(fila.isEmpty()) {

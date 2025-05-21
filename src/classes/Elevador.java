@@ -89,7 +89,6 @@
             if(andarAtual == destino){
                 estado = EstadoElevador.PARADO;
                 System.out.println("Elevador " + numeroElevador + " no andar " + andarAtual + " - Estado: " + estado);
-                desembarquePessoas();
                 atualizarDestino();
                 return;
             }
@@ -107,8 +106,8 @@
         }
 
 
-        private void desembarquePessoas() {
-
+        public void desembarquePessoas() {
+            if(estado != EstadoElevador.PARADO) return;
             for(int i = 0; i < pessoasDentro.tamanho(); i++){ //percorre a lista de pessoas dentro do elevador
                 Pessoa p = pessoasDentro.getElemento(i);
                 if(p != null && p.getAndarDestino() == andarAtual){ //compara o andar de destino de cada pessoa dentro do elevador

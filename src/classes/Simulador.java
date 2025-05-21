@@ -17,10 +17,11 @@ public class Simulador implements Serializable {
     private final int duracaoSimulacao;
     private int tempoMovimentoElevador;
 
-    public Simulador(int duracaoSimulacao, int velocidadeMs, int andares, int elevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico) {
+
+    public Simulador(int duracaoSimulacao, int velocidadeMs, int andares, int elevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico, boolean andaresAleatorios) {
         this.segundosSimulados = 0;
         this.velocidadeMs = velocidadeMs;
-        this.predio = new Predio(andares, elevadores, estado, tempoMovimentoElevador, horarioPico);
+        this.predio = new Predio(andares, elevadores, estado, tempoMovimentoElevador, horarioPico, andaresAleatorios);
         this.duracaoSimulacao = duracaoSimulacao;
         this.tempoMovimentoElevador = tempoMovimentoElevador;
     }
@@ -122,10 +123,7 @@ public class Simulador implements Serializable {
 
     public static Simulador carregar(String nomeArquivo) {
         File arquivo = new File("saves", nomeArquivo + ".dat");
-
-        System.out.println("---------------------------------------------------------");
-        System.out.println("                  CARREGAMENTO INICIADO...");
-        System.out.println("---------------------------------------------------------");
+        
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo))) {
             Simulador sim = (Simulador) in.readObject();
 

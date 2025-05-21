@@ -10,10 +10,11 @@ public class Predio extends Serializacao {
     private final Random randomizacao;
     private int NumeroDePessoas;
     private int tempoMovimentoElevador;
-    boolean horarioPico;
+    private boolean horarioPico;
+    private boolean andaresAleatorios;
 
 
-    public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico){
+    public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico , boolean andaresAleatorios){
         this.andares = new ListaEstatica<>(numeroAndares);
         this.randomizacao = new Random();
         for (int i = 0; i < numeroAndares; i++){
@@ -23,13 +24,14 @@ public class Predio extends Serializacao {
         this.NumeroDePessoas = 0;
         this.tempoMovimentoElevador = tempoMovimentoElevador;
         this.horarioPico = horarioPico;
+        this.andaresAleatorios = andaresAleatorios;
     }
 
     @Override
     public void atualizar(int segundosSimulados ) {
 
         if (segundosSimulados % (3 * tempoMovimentoElevador) == 0) {
-            int andarOrigem = 0;
+
             ListaEstatica<Integer> destinos;
 
             int cont = 1;
@@ -38,6 +40,12 @@ public class Predio extends Serializacao {
             }
 
             for(int e = 0; e < cont; e++) {
+                int andarOrigem;
+                if(andaresAleatorios){
+                    andarOrigem = randomizacao.GeradorDeNumeroAleatorio(andares.getTamanho());}
+                else{
+                    andarOrigem = 0;
+                }
                 do {
                     destinos = new ListaEstatica<>(randomizacao.GeradorDeNumeroAleatorio(5));
                 } while (destinos.getTamanho() <= 1);
@@ -58,6 +66,7 @@ public class Predio extends Serializacao {
                 }else{
                     id = segundosSimulados / (3 * tempoMovimentoElevador);
                 }
+
                 Pessoa p = new Pessoa(id, randomizacao.GeradorDeNumeroAleatorio(3), andarOrigem, destinos);
                 NumeroDePessoas++;
                 andares.getElemento(andarOrigem).adicionarPessoaFila(p);
