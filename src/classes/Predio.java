@@ -14,16 +14,18 @@ public class Predio extends Serializacao {
     private boolean andaresAleatorios;
 
 
-    public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico , boolean andaresAleatorios){
+    public Predio(int numeroAndares, int numeroElevadores, CentralDeControle.EstadoCentralDeControle estado, int tempoMovimentoElevador, boolean horarioPico , boolean andaresAleatorios, int energiaDeslocamento, int energiaParada){
         if(numeroAndares < 5)throw new IllegalArgumentException("Numero de andares deve ser maior ou igual a 5");
         if(numeroElevadores < 1)throw new IllegalArgumentException("Numero de elevadores deve ser maior que 0");
         if(tempoMovimentoElevador < 1)throw new IllegalArgumentException("Tempo de movimento de elevador deve ser maior que 0");
+        if(energiaDeslocamento < 1)throw new IllegalArgumentException("Energia de deslocamento deve ser maior que 0");
+        if(energiaParada < 1)throw new IllegalArgumentException("Energia de parada deve ser maior que 0");
         this.andares = new ListaEstatica<>(numeroAndares);
         this.randomizacao = new Random();
         for (int i = 0; i < numeroAndares; i++){
             andares.add(new Andar(i),i);
         }
-        this.centralDeControle = new CentralDeControle(numeroElevadores, this, estado);
+        this.centralDeControle = new CentralDeControle(numeroElevadores, this, estado, energiaDeslocamento, energiaParada);
         this.NumeroDePessoas = 0;
         this.tempoMovimentoElevador = tempoMovimentoElevador;
         this.horarioPico = horarioPico;

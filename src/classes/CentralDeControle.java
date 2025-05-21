@@ -11,6 +11,8 @@ public class CentralDeControle extends Serializacao {
     private int tempoEsperaTotal;
     private int maiorTempoEspera;
     private int chamadasAtendidas;
+    private int energiaDeslocamento;
+    private int energiaParada;
 
     public enum EstadoCentralDeControle{
         Economia,
@@ -18,7 +20,7 @@ public class CentralDeControle extends Serializacao {
         Normal;
     }
 
-    public CentralDeControle(int numeroElevadores, Predio predio, EstadoCentralDeControle estado ) {
+    public CentralDeControle(int numeroElevadores, Predio predio, EstadoCentralDeControle estado, int energiaDeslocamento, int energiaParada ) {
         this.elevadores = new ListaEstatica<Elevador>(numeroElevadores);
         this.predio = predio;
         for (int i = 0; i < numeroElevadores; i++) {
@@ -29,6 +31,8 @@ public class CentralDeControle extends Serializacao {
         tempoEsperaTotal = 0;
         maiorTempoEspera = 0;
         chamadasAtendidas = 0;
+        this.energiaDeslocamento = energiaDeslocamento;
+        this.energiaParada = energiaParada;
     }
 
     @Override
@@ -58,8 +62,8 @@ public class CentralDeControle extends Serializacao {
             receberPessoas(elevador);
 
             //cálculos de energia total gasta e maior energia gasta
-            if(andar_anterior != elevador.getAndarAtual()){ energiaGasta+=2;}
-            if(estado_anterior != elevador.getEstado()){ energiaGasta++;}
+            if(andar_anterior != elevador.getAndarAtual()){ energiaGasta+=energiaDeslocamento;}
+            if(estado_anterior != elevador.getEstado()){ energiaGasta+=energiaParada;}
 
 
             Node<Pessoa> atual = elevador.getPessoasSaida().getHead();
