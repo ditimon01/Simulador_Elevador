@@ -14,8 +14,8 @@ public class Main {
          - melhorar visualização do simulador
         */
 
-        CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Economia; // Normal, Economia, Felicidade
-        int DURACAO_SIMULACAO = 86400; // em segundos
+        CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Felicidade; // Normal, Economia, Felicidade
+        int DURACAO_SIMULACAO = 7200; // em segundos
         int VELOCIDADE_SIMULACAO_MS = 1; // quanto maior o valor inserido, mais lento a simulação roda, a simulação não aceita uma entrada menor que 1
         int QUANTIDADE_ANDARES = 50; // quantidade de andares da simulação, a simulação não aceita uma quantia menor que 5
         int QUANTIDADE_ELEVADORES = 10; // quantidade de elevadores da simulação, a simulação não aceita uma quantia menor que 1
@@ -40,8 +40,8 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        //
-        // simulador.gravar();
+
+         simulador.gravar();
 
 //        Simulador.carregar("teste-a50-e10-pe10-Felicidade-HorarioNormal");
 //        Simulador.carregar("teste-a50-e10-pe10-Felicidade-HorarioNormal-1");

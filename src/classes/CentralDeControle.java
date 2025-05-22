@@ -3,38 +3,70 @@ package classes;
 import estruturas.ListaEstatica;
 import estruturas.Node;
 
+/**
+ * Classe que representa a central de controle dos elevadores de um prédio.
+ * Gerencia os elevadores, define a estratégia de operação (Economia, Felicidade ou Normal)
+ * e calcula estatísticas como energia gasta e tempo de espera.
+ */
 public class CentralDeControle extends Serializacao {
+    // Lista de elevadores controlados
     private ListaEstatica<Elevador> elevadores;
+
+    // Referência ao prédio onde a central está operando (não serializável)
     private transient Predio predio;
+
+    // Estratégia de controle adotada
     private final EstadoCentralDeControle estado;
+
+    // Dados estatísticos
     private int energiaGasta;
     private int tempoEsperaTotal;
     private int maiorTempoEspera;
     private int chamadasAtendidas;
+
+    // Parâmetros de consumo de energia
     private int energiaDeslocamento;
     private int energiaParada;
 
+    /**
+     * Enumeração dos estados de operação da central:
+     * Economia - prioriza menor gasto de energia;
+     * Felicidade - prioriza menor tempo de espera;
+     * Normal - balanceado, prioriza elevadores menos ocupados.
+     */
     public enum EstadoCentralDeControle{
         Economia,
         Felicidade,
         Normal
     }
 
+    /**
+     * Construtor da Central de Controle
+     */
     public CentralDeControle(int numeroElevadores, int capacidadeElevador, Predio predio, EstadoCentralDeControle estado, int energiaDeslocamento, int energiaParada ) {
         this.elevadores = new ListaEstatica<>(numeroElevadores);
         this.predio = predio;
+
+        // Cria os elevadores
         for (int i = 0; i < numeroElevadores; i++) {
             elevadores.add(new Elevador(i, capacidadeElevador), i);
         }
+
         this.estado = estado;
+        this.energiaDeslocamento = energiaDeslocamento;
+        this.energiaParada = energiaParada;
+
+        // Inicializa os dados estatísticos
         this.energiaGasta = 0;
         tempoEsperaTotal = 0;
         maiorTempoEspera = 0;
         chamadasAtendidas = 0;
-        this.energiaDeslocamento = energiaDeslocamento;
-        this.energiaParada = energiaParada;
+
     }
 
+    /**
+     * Atualiza o estado de todos os elevadores conforme o tempo simulado
+     */
     @Override
     public void atualizar(int segundosSimulados) {
 
@@ -45,7 +77,7 @@ public class CentralDeControle extends Serializacao {
             Elevador.EstadoElevador estado_anterior = elevador.getEstado();
 
 
-            //escolha baseado na heurística escolhida
+            // Seleciona a estratégia de operação
             if(estado == EstadoCentralDeControle.Economia){
                 verificaChamadasEconomia();
             }else if(estado == EstadoCentralDeControle.Felicidade){
@@ -54,11 +86,13 @@ public class CentralDeControle extends Serializacao {
                 verificarChamadasNormal();
             }
 
+            // Atualiza o estado do elevador
             elevador.atualizar(segundosSimulados);
 
-            //adiciona as pessoas que vão desembarcar na lista PessoasSaida
+            // Desembarca passageiros (retira as pessoas da lista do elevador e adiciona as pessoas que vão desembarcar na lista PessoasSaida)
             elevador.desembarquePessoas();
-            // adiciona as pessoas quando o elevador já está no andar
+
+            // Recebe passageiros do andar
             receberPessoas(elevador);
 
             //cálculos de energia total gasta e maior energia gasta
@@ -67,7 +101,7 @@ public class CentralDeControle extends Serializacao {
 
 
             Node<Pessoa> atual = elevador.getPessoasSaida().getHead();
-            // retira as pessoas que vão sair do elevador da lista PessoasSaida
+            // Processa desembarque de pessoas no andar (retira as pessoas que vão sair do elevador da lista PessoasSaida)
             while (atual != null) {
                 Pessoa p = atual.getElemento();
                 predio.getAndares().getElemento(elevador.getAndarAtual()).adicionarPessoaAndar(p);
@@ -75,9 +109,8 @@ public class CentralDeControle extends Serializacao {
                 atual = elevador.getPessoasSaida().getHead();
             }
 
-
+            // Atualiza o andar atual das pessoas dentro do elevador
             Node<Pessoa> atual2 = elevador.getPessoasDentro().getHead();
-            //atualiza o andarAtual de cada pessoa
             while (atual2 != null) {
                 Pessoa p = atual2.getElemento();
                 p.setAndarAtual(elevador.getAndarAtual());
@@ -87,7 +120,9 @@ public class CentralDeControle extends Serializacao {
         }
     }
 
-
+    /**
+     * Método que permite que o elevador receba pessoas do andar atual
+     */
     private void receberPessoas(Elevador elevador) {
 
         if (elevador.getEstado() == Elevador.EstadoElevador.PARADO) {
@@ -107,7 +142,7 @@ public class CentralDeControle extends Serializacao {
 
             andar.verificaPessoas();
 
-            //remoção do destino de parada para evitar loop
+            // Remove o destino do elevador se não há mais pessoas no andar ou caso o elevador estiver lotado
             if (!andar.temChamada() || elevador.getPessoasDentro().tamanho() == elevador.getCapacidadeMaxima()) {
                 elevador.removeDestino(andar.getNumero());
             }
@@ -116,13 +151,14 @@ public class CentralDeControle extends Serializacao {
         elevador.atualizarDestino();
     }
 
+    /**
+     * Estratégia "Normal": envia o elevador com menos destinos ativos
+     */
     public void verificarChamadasNormal(){
 
         ListaEstatica<Andar> andares = predio.getAndares();
         Elevador elevadorEnviado = null;
         int QuantiaDestinos = Integer.MAX_VALUE;
-
-        //normal apenas manda para chamada do elevador mais desocupado (com menos chamadas)
 
         for (int i = 0; i < andares.getTamanho(); i++) {
             Andar andarAtual = andares.getElemento(i);
@@ -152,8 +188,9 @@ public class CentralDeControle extends Serializacao {
         }
     }
 
-
-
+    /**
+     * Estratégia "Economia": escolhe o elevador que gastará menos energia
+     */
     public void verificaChamadasEconomia() {
         ListaEstatica<Andar> andares = predio.getAndares();
         int menorEnergiaGasta = Integer.MAX_VALUE;
@@ -179,7 +216,7 @@ public class CentralDeControle extends Serializacao {
                     }
 
 
-                    //cálculo do gasto baseado nos destinos de cada elevador
+                    // Calcula energia adicional com base nos destinos atuais do elevador
                     Node<Integer> andarDestinoAtual = elevadorAtual.getDestinos().getHead();
 
                     if(andarDestinoAtual != null && andarAtual.getNumero() > andarDestinoAtual.getElemento()){
@@ -200,7 +237,7 @@ public class CentralDeControle extends Serializacao {
                         }
                     }
 
-                    //escolha do elevador com menor gasto
+                    // Verifica o menor gasto de energia
                     if (elevadorAtual.getEstado() == Elevador.EstadoElevador.PARADO) {
                         energiaGastaAtual++;
                         if(energiaGastaAtual < menorEnergiaGasta){
@@ -219,6 +256,8 @@ public class CentralDeControle extends Serializacao {
                         }
                     }
                 }
+
+                // Atribui o elevador com menor gasto a chamada
                 if(elevadorEnviado != null){
                     elevadorEnviado.addDestino(andarAtual.getNumero());
                     elevadorEnviado.atualizarDestino();
@@ -228,7 +267,9 @@ public class CentralDeControle extends Serializacao {
     }
 
 
-    //
+    /**
+     * Estratégia "Felicidade": escolhe o elevador que chegará mais rápido
+     */
     public void verificaChamadasFelicidade() {
         ListaEstatica<Andar> andares = predio.getAndares();
         int menorTempo = andares.getTamanho() + 1;
@@ -255,7 +296,7 @@ public class CentralDeControle extends Serializacao {
                         break;
                     }
 
-                    // adiciona o tempo de saída e de todas as paradas até chegar ao destino
+                    // Calcula tempo adicional com base nos destinos atuais do elevador
                     Node<Integer> andarDestinoAtual = elevadorAtual.getDestinos().getHead();
 
 
@@ -275,7 +316,7 @@ public class CentralDeControle extends Serializacao {
                         }
                     }
 
-                    // seleciona o elevador com menor tempo de chegada ao destino
+                    // Verifica o elevador com menor tempo de chegada ao destino
                     if (elevadorAtual.getEstado() == Elevador.EstadoElevador.PARADO) {
                         if (tempo < menorTempo) {
                             menorTempo = tempo;
@@ -294,6 +335,7 @@ public class CentralDeControle extends Serializacao {
                     }
                 }
 
+                // Atribui o elevador com menor tempo de chegada a chamada
                 if(elevadorEnviado != null) {
                     elevadorEnviado.addDestino(andarAtual.getNumero());
                     elevadorEnviado.atualizarDestino();
@@ -303,7 +345,7 @@ public class CentralDeControle extends Serializacao {
         }
     }
 
-
+    // Getters dos dados estatísticos
     public ListaEstatica<Elevador> getElevadores() { return elevadores; }
 
     public int getEnergiaGasta() {
