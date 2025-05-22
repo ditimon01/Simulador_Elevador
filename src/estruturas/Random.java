@@ -6,6 +6,10 @@ public class Random implements Serializable {
 
     private long NovaSeed;
 
+    public Random(long seed) {
+        this.NovaSeed = seed;
+    }
+
     public Random() {
         this.NovaSeed = System.currentTimeMillis(); // atribui o valor do milissegundo atual em forma de número
     }

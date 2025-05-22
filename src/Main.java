@@ -2,6 +2,8 @@
 import classes.CentralDeControle;
 import classes.Simulador;
 
+import java.io.File;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -12,15 +14,15 @@ public class Main {
          - melhorar visualização do simulador
         */
 
-        CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Felicidade; // Normal, Economia, Felicidade
-        int DURACAO_SIMULACAO = 1800; // em segundos
-        int VELOCIDADE_SIMULACAO_MS = 50; // quanto maior o valor inserido, mais lento a simulação roda, a simulação não aceita uma entrada menor que 1
-        int QUANTIDADE_ANDARES = 10; // quantidade de andares da simulação, a simulação não aceita uma quantia menor que 5
-        int QUANTIDADE_ELEVADORES = 3; // quantidade de elevadores da simulação, a simulação não aceita uma quantia menor que 1
+        CentralDeControle.EstadoCentralDeControle estado = CentralDeControle.EstadoCentralDeControle.Economia; // Normal, Economia, Felicidade
+        int DURACAO_SIMULACAO = 86400; // em segundos
+        int VELOCIDADE_SIMULACAO_MS = 1; // quanto maior o valor inserido, mais lento a simulação roda, a simulação não aceita uma entrada menor que 1
+        int QUANTIDADE_ANDARES = 50; // quantidade de andares da simulação, a simulação não aceita uma quantia menor que 5
+        int QUANTIDADE_ELEVADORES = 10; // quantidade de elevadores da simulação, a simulação não aceita uma quantia menor que 1
         int capacidadeElevador = 10; // quantidade de pessoas dentro do elevador, a simulação não aceita uma entrada menor que 5
-        int tempoMovimentacaoElevador = 10; // quantidade de tempo em segundos que o elevador leva de um andar a outro
-        int energiaDeslocamento = 2; // energia gasta a cada deslocamento de elevador, a simulação não aceita uma entrada menor que 0
-        int energiaParada = 1; // energia gasta a cada parada de elevador, a s simulação não aceita uma entrada menor que 0
+        int tempoMovimentacaoElevador = 5; // quantidade de tempo em segundos que o elevador leva de um andar a outro
+        int energiaDeslocamento = 1; // energia gasta a cada deslocamento de elevador, a simulação não aceita uma entrada menor que 0
+        int energiaParada = 2; // energia gasta a cada parada de elevador, a s simulação não aceita uma entrada menor que 0
         boolean horarioPico = false; // caso seja true: quantidade de pessoas geradas é dobrada
         boolean andaresAleatorios = false; // caso seja true: as pessoas são geradas em andares aleatórios
 
@@ -38,9 +40,17 @@ public class Main {
                 e.printStackTrace();
             }
         }
+        //
+        // simulador.gravar();
 
-        simulador.gravar("MinhaSimulação");
+//        Simulador.carregar("teste-a50-e10-pe10-Felicidade-HorarioNormal");
+//        Simulador.carregar("teste-a50-e10-pe10-Felicidade-HorarioNormal-1");
+//        Simulador.carregar("teste-a50-e10-pe10-Felicidade-HorarioNormal-2");
+//        Simulador.carregar("teste-a50-e10-pe10-Felicidade-HorarioNormal-3");
+//        Simulador.carregar("teste-a50-e10-pe10-Felicidade-HorarioNormal-4");
+
 
 
     }
+
 }

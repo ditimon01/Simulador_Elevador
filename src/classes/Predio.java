@@ -8,7 +8,6 @@ public class Predio extends Serializacao {
     private final ListaEstatica<Andar> andares;
     private final CentralDeControle centralDeControle;
     private final Random randomizacao;
-    private int NumeroDePessoas;
     private int tempoMovimentoElevador;
     private boolean horarioPico;
     private boolean andaresAleatorios;
@@ -27,7 +26,6 @@ public class Predio extends Serializacao {
             andares.add(new Andar(i),i);
         }
         this.centralDeControle = new CentralDeControle(numeroElevadores, capacidadeElevador, this, estado, energiaDeslocamento, energiaParada);
-        this.NumeroDePessoas = 0;
         this.tempoMovimentoElevador = tempoMovimentoElevador;
         this.horarioPico = horarioPico;
         this.andaresAleatorios = andaresAleatorios;
@@ -36,7 +34,25 @@ public class Predio extends Serializacao {
     @Override
     public void atualizar(int segundosSimulados ) {
 
-        if (segundosSimulados % (3 * tempoMovimentoElevador) == 0) {
+        // intervalo de tempo entre a geração de pessoas
+        int intervaloMax = 60; // prédio pequeno (5 andares)
+        int intervaloMin = tempoMovimentoElevador;  // prédio muito grande
+        double fator = 0.8;
+
+        // Fórmula proporcional
+        double intervalo_temp =  intervaloMax - (fator * (andares.getTamanho() - 5));
+
+        int multiplo = (int) Math.ceil(intervalo_temp / intervaloMin);
+        intervalo_temp = intervaloMin * multiplo;
+
+        // Garante que nunca fique abaixo do mínimo
+        if (intervalo_temp < intervaloMin) {
+            intervalo_temp = intervaloMin;
+        }
+
+        int intervalo = (int) intervalo_temp;
+
+        if (segundosSimulados % intervalo == 0) {
 
             ListaEstatica<Integer> destinos;
 
@@ -57,7 +73,7 @@ public class Predio extends Serializacao {
                 } while (destinos.getTamanho() <= 1);
 
 
-                for (int i = 0; i < andares.getTamanho() - 1; i++) {
+                for (int i = 0; i < destinos.getTamanho() - 1; i++) {
                     int num = randomizacao.GeradorDeNumeroAleatorio(andares.getTamanho());
                     if (num != 0) {
                         destinos.add(num, i);
@@ -68,13 +84,12 @@ public class Predio extends Serializacao {
 
                 int id ;
                 if(horarioPico){
-                    id = ((segundosSimulados / (3 * tempoMovimentoElevador)) * 2) + e;
+                    id = ((segundosSimulados / intervalo) * 2) + e;
                 }else{
-                    id = segundosSimulados / (3 * tempoMovimentoElevador);
+                    id = segundosSimulados / intervalo;
                 }
 
-                Pessoa p = new Pessoa(id, randomizacao.GeradorDeNumeroAleatorio(3), andarOrigem, destinos);
-                NumeroDePessoas++;
+                Pessoa p = new Pessoa(id, randomizacao.GeradorDeNumeroAleatorio(2), andarOrigem, destinos);
                 andares.getElemento(andarOrigem).adicionarPessoaFila(p);
             }
         }
@@ -103,7 +118,7 @@ public class Predio extends Serializacao {
                 while(atual2 != null){
                     Pessoa p = atual2.getElemento();
                     if(p != null){
-                        p.addTempoEspera(20);
+                        p.addTempoEspera(tempoMovimentoElevador);
                     }
                     atual2 = atual2.getNext();
                 }
@@ -124,8 +139,9 @@ public class Predio extends Serializacao {
         return centralDeControle;
     }
 
-    public int getNumeroDePessoas() {
-        return NumeroDePessoas;
+
+    public boolean isHorarioPico() {
+        return horarioPico;
     }
 
 }

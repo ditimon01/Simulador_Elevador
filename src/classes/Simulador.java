@@ -61,7 +61,7 @@ public class Simulador implements Serializable {
 
         int energiaGasta = predio.getCentralDeControle().getEnergiaGasta();
         int maiorTempo = predio.getCentralDeControle().getMaiorTempoEspera();
-        float tempoMedio = (float) predio.getCentralDeControle().getTempoEsperaTotal() / predio.getNumeroDePessoas();
+        float tempoMedio = (float) predio.getCentralDeControle().getTempoEsperaTotal() / predio.getCentralDeControle().getChamadasAtendidas();
         int tempoMedioTemp = (int) tempoMedio;
         float energiaPorChamada =  predio.getCentralDeControle().getEnergiaGasta() / (float) predio.getCentralDeControle().getChamadasAtendidas();
         int chamadasAtendidas = predio.getCentralDeControle().getChamadasAtendidas();
@@ -105,13 +105,42 @@ public class Simulador implements Serializable {
     }
 
 
-    public void gravar(String nomeArquivo) {
+    public void gravar() {
+
+        String nomeArquivo = "teste";
+
+        nomeArquivo += "-a" + predio.getAndares().getTamanho();
+        nomeArquivo += "-e" + predio.getCentralDeControle().getElevadores().getTamanho();
+        nomeArquivo += "-pe" + predio.getCentralDeControle().getElevadores().getElemento(0).getCapacidadeMaxima();
+
+        if(predio.getCentralDeControle().getEstado() == CentralDeControle.EstadoCentralDeControle.Normal){
+            nomeArquivo += "-Normal";
+        } else if (predio.getCentralDeControle().getEstado() == CentralDeControle.EstadoCentralDeControle.Economia) {
+            nomeArquivo += "-Economia";
+        }else{
+            nomeArquivo += "-Felicidade";
+        }
+
+        if(predio.isHorarioPico()){
+            nomeArquivo += "-HorarioPico";
+        }else{
+            nomeArquivo += "-HorarioNormal";
+        }
+
 
         File arquivo = new File("saves", nomeArquivo + ".dat");
 
+        String nomeCompleto = "";
+        int cont = 1;
+        while(arquivo.exists()){
+            nomeCompleto = nomeArquivo + "-" + cont + ".dat";
+            arquivo = new File("saves", nomeCompleto);
+            cont++;
+        }
+
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             System.out.println("---------------------------------------------------------");
-            System.out.println("Simulação gravada com sucesso em : " + nomeArquivo);
+            System.out.println("Simulação gravada com sucesso em : " + nomeCompleto);
             out.writeObject(this);
         }catch (IOException e){
             System.out.println("Erro ao gravar simulação: " + e.getMessage());
@@ -127,7 +156,7 @@ public class Simulador implements Serializable {
 
             int energiaGasta = sim.predio.getCentralDeControle().getEnergiaGasta();
             int maiorTempo = sim.predio.getCentralDeControle().getMaiorTempoEspera();
-            float tempoMedio = (float) sim.predio.getCentralDeControle().getTempoEsperaTotal() / sim.predio.getNumeroDePessoas();
+            float tempoMedio = (float) sim.predio.getCentralDeControle().getTempoEsperaTotal() / sim.predio.getCentralDeControle().getChamadasAtendidas();
             int tempoMedioTemp = (int) tempoMedio;
             float energiaPorChamada =  sim.predio.getCentralDeControle().getEnergiaGasta() / (float) sim.predio.getCentralDeControle().getChamadasAtendidas();
             int chamadasAtendidas = sim.predio.getCentralDeControle().getChamadasAtendidas();
@@ -152,6 +181,8 @@ public class Simulador implements Serializable {
             return null;
         }
     }
+
+
 
     public boolean estaExecutando() {
         return emExecucao;

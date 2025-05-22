@@ -167,7 +167,7 @@ public class CentralDeControle extends Serializacao {
                 int energiaGastaAtual;
                 for (int e = 0; e < elevadores.getTamanho(); e++) {
                     elevadorAtual = elevadores.getElemento(e);
-                    energiaGastaAtual = (Math.abs(andarAtual.getNumero() - elevadorAtual.getAndarAtual())) * 2;
+                    energiaGastaAtual = (Math.abs(andarAtual.getNumero() - elevadorAtual.getAndarAtual()))*energiaDeslocamento;
 
                     if(elevadorAtual.getPessoasDentro().tamanho() == elevadorAtual.getCapacidadeMaxima()){
                         continue;
@@ -255,14 +255,11 @@ public class CentralDeControle extends Serializacao {
                         break;
                     }
 
+                    // adiciona o tempo de saída e de todas as paradas até chegar ao destino
                     Node<Integer> andarDestinoAtual = elevadorAtual.getDestinos().getHead();
 
-                    if(elevadorAtual.getEstado() == Elevador.EstadoElevador.PARADO){
-                        tempo++;
-                    }
 
                     if(andarDestinoAtual != null && andarAtual.getNumero() > andarDestinoAtual.getElemento()){
-                        andarDestinoAtual = andarDestinoAtual.getNext();
                         while(andarDestinoAtual != null){
                             if(andarAtual.getNumero() > andarDestinoAtual.getElemento()){
                                 tempo++;
@@ -270,7 +267,6 @@ public class CentralDeControle extends Serializacao {
                             andarDestinoAtual = andarDestinoAtual.getNext();
                         }
                     }else if(andarDestinoAtual != null && andarAtual.getNumero() < andarDestinoAtual.getElemento()){
-                        andarDestinoAtual = andarDestinoAtual.getNext();
                         while(andarDestinoAtual != null){
                             if(andarAtual.getNumero() < andarDestinoAtual.getElemento()){
                                 tempo++;
@@ -279,18 +275,19 @@ public class CentralDeControle extends Serializacao {
                         }
                     }
 
+                    // seleciona o elevador com menor tempo de chegada ao destino
                     if (elevadorAtual.getEstado() == Elevador.EstadoElevador.PARADO) {
                         if (tempo < menorTempo) {
                             menorTempo = tempo;
                             elevadorEnviado = elevadorAtual;
                         }
                     } else if(elevadorAtual.getEstado() == Elevador.EstadoElevador.SUBINDO && elevadorAtual.getAndarAtual() < andarAtual.getNumero()){
-                        if (tempo <= menorTempo) {
+                        if (tempo < menorTempo) {
                             menorTempo = tempo;
                             elevadorEnviado = elevadorAtual;
                         }
                     } else if (elevadorAtual.getEstado() == Elevador.EstadoElevador.DESCENDO && elevadorAtual.getAndarAtual() > andarAtual.getNumero()){
-                        if (tempo <= menorTempo) {
+                        if (tempo < menorTempo) {
                             menorTempo = tempo;
                             elevadorEnviado = elevadorAtual;
                         }
@@ -323,5 +320,9 @@ public class CentralDeControle extends Serializacao {
 
     public int getChamadasAtendidas() {
         return chamadasAtendidas;
+    }
+
+    public EstadoCentralDeControle getEstado() {
+        return estado;
     }
 }
